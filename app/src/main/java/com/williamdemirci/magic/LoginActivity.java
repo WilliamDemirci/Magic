@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,12 +17,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.w3c.dom.Text;
+
 public class LoginActivity extends AppCompatActivity {
     private EditText emailLogin;
     private EditText passwordLogin;
-    private Button connectionButtonLogin;
-    private Button createAccountButtonLogin;
-    private Button forgotPasswordButtonLogin;
+    private Button connectionButton;
+    private TextView createAccountLink;
+    private TextView resetPasswordLink;
     private FirebaseAuth mAuth;
     private static final String TAG = "CONNECTION (Login Activity)";
 
@@ -34,12 +37,12 @@ public class LoginActivity extends AppCompatActivity {
 
         emailLogin = (EditText) findViewById(R.id.emailLogin);
         passwordLogin = (EditText) findViewById(R.id.passwordLogin);
-        connectionButtonLogin = (Button) findViewById(R.id.connectionButtonLogin);
-        createAccountButtonLogin = (Button) findViewById(R.id.createAccountButtonLogin);
-        forgotPasswordButtonLogin = (Button) findViewById(R.id.forgotPasswordButtonLogin);
+        connectionButton = (Button) findViewById(R.id.connectionButtonLogin);
+        createAccountLink = (TextView) findViewById(R.id.createAccountLink);
+        resetPasswordLink = (TextView) findViewById(R.id.resetPasswordLink);
 
         // connection button
-        connectionButtonLogin.setOnClickListener(new View.OnClickListener() {
+        connectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // get email & password values
@@ -56,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    mainIntent();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -63,6 +67,22 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         });
+            }
+        });
+
+        // create account link
+        createAccountLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerIntent();
+            }
+        });
+
+        // reset password link
+        resetPasswordLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetPasswordIntent();
             }
         });
     }
@@ -74,9 +94,25 @@ public class LoginActivity extends AppCompatActivity {
 
         // check if user is already connected, switch to MainActivity
         if(currentUser != null) {
-            Intent intentMainActivity = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intentMainActivity);
-            finish();
+            mainIntent();
         }
+    }
+
+    private void mainIntent() { // MainActivity Intent
+        Intent intentMainActivity = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intentMainActivity);
+        finish();
+    }
+
+    private void registerIntent() { // MainActivity Intent
+        Intent intentRegisterActivity = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intentRegisterActivity);
+        finish();
+    }
+
+    private void resetPasswordIntent() { // MainActivity Intent
+        Intent intentResetPasswordActivity = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+        startActivity(intentResetPasswordActivity);
+        finish();
     }
 }

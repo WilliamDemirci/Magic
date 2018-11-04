@@ -6,4 +6,16 @@
     <string name="connectionButton">Connection</string>
     <string name="createAccountButton">Create an account</string>
     <string name="forgotPasswordButton">Forgot password</string>
+    <string name="registrationText">Registration</string>
+    <string name="signUpButton">Sign up</string>
+    <string name="createAccountLink">Create an account</string>
+    <string name="resetPasswordLink">Reset your password</string>
+    <string name="searchMenu">Search</string>
+    <string name="settingsMenu">Settings</string>
+    <string name="signOutMenu">Sign out</string>
+    <string name="refreshMenu">Refresh</string>
+    <string name="alertMenu">Alert</string>
+    <string name="resetPasswordLogo">Reset your password</string>
+    <string name="resetButton">Reset</string>
+    <string name="connectionLink">Connect to your account</string>
 </resources>
