@@ -21,7 +21,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/logoLogin"
+                android:id="@+id/logoRegistration"
                 android:layout_width="338dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="8dp"
@@ -47,8 +47,8 @@
                 android:textAlignment="center"
                 android:textColor="@color/greyTextColor"
                 android:textColorHint="@color/greyTextColor"
-                app:layout_constraintStart_toStartOf="@+id/logoLogin"
-                app:layout_constraintTop_toBottomOf="@+id/logoLogin" />
+                app:layout_constraintStart_toStartOf="@+id/logoRegistration"
+                app:layout_constraintTop_toBottomOf="@+id/logoRegistration" />
 
             <EditText
                 android:id="@+id/passwordLogin"

@@ -17,8 +17,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.w3c.dom.Text;
-
 public class LoginActivity extends AppCompatActivity {
     private EditText emailLogin;
     private EditText passwordLogin;
@@ -52,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
                 // connection process
                 mAuth.signInWithEmailAndPassword(loginEmailText, loginPasswordText)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
@@ -104,13 +101,13 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void registerIntent() { // MainActivity Intent
+    private void registerIntent() { // Register Activity Intent
         Intent intentRegisterActivity = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intentRegisterActivity);
         finish();
     }
 
-    private void resetPasswordIntent() { // MainActivity Intent
+    private void resetPasswordIntent() { // Reset Password Activity Intent
         Intent intentResetPasswordActivity = new Intent(LoginActivity.this, ResetPasswordActivity.class);
         startActivity(intentResetPasswordActivity);
         finish();

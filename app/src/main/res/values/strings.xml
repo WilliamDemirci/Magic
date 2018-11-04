@@ -18,4 +18,5 @@
     <string name="resetPasswordLogo">Reset your password</string>
     <string name="resetButton">Reset</string>
     <string name="connectionLink">Connect to your account</string>
+    <string name="usernameField">Username</string>
 </resources>

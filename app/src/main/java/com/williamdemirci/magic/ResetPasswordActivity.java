@@ -79,13 +79,13 @@ public class ResetPasswordActivity extends AppCompatActivity {
         finish();
     }
 
-    private void registerIntent() { // MainActivity Intent
+    private void registerIntent() { // Register Activity Intent
         Intent intentRegisterActivity = new Intent(ResetPasswordActivity.this, RegisterActivity.class);
         startActivity(intentRegisterActivity);
         finish();
     }
 
-    private void loginIntent() { // MainActivity Intent
+    private void loginIntent() { // Login Activity Intent
         Intent intentLoginActivity = new Intent(ResetPasswordActivity.this, LoginActivity.class);
         startActivity(intentLoginActivity);
         finish();

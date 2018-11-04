@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/logoLogin"
+                android:id="@+id/logoRegistration"
                 android:layout_width="338dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="8dp"
@@ -33,7 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/email"
+                android:id="@+id/emailRegistration"
                 android:layout_width="335dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="204dp"
@@ -45,8 +45,24 @@
                 android:textAlignment="center"
                 android:textColor="@color/greyTextColor"
                 android:textColorHint="@color/greyTextColor"
-                app:layout_constraintStart_toStartOf="@+id/logoLogin"
-                app:layout_constraintTop_toBottomOf="@+id/logoLogin" />
+                app:layout_constraintStart_toStartOf="@+id/logoRegistration"
+                app:layout_constraintTop_toBottomOf="@+id/logoRegistration" />
+
+            <EditText
+                android:id="@+id/usernameRegistration"
+                android:layout_width="335dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/greyTextColor"
+                android:ems="10"
+                android:hint="@string/usernameField"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:textColor="@color/greyTextColor"
+                android:textColorHint="@color/greyTextColor"
+                app:layout_constraintStart_toStartOf="@+id/logoRegistration"
+                app:layout_constraintTop_toBottomOf="@+id/emailRegistration" />
 
             <EditText
                 android:id="@+id/passwordRegistration"
@@ -61,8 +77,8 @@
                 android:textAlignment="center"
                 android:textColor="@color/greyTextColor"
                 android:textColorHint="@color/greyTextColor"
-                app:layout_constraintStart_toStartOf="@+id/email"
-                app:layout_constraintTop_toBottomOf="@+id/email"
+                app:layout_constraintStart_toStartOf="@+id/emailRegistration"
+                app:layout_constraintTop_toBottomOf="@+id/usernameRegistration"
                 tools:ignore="TextFields" />
 
             <Button
@@ -70,15 +86,47 @@
                 android:layout_width="256dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="532dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimaryDark"
                 android:text="@string/signUpButton"
                 android:textColor="@color/greyTextColor"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.431"
+                app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/passwordRegistration" />
+
+            <TextView
+                android:id="@+id/connectionLink"
+                android:layout_width="wrap_content"
+                android:layout_height="23dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:text="@string/connectionLink"
+                android:textColor="@color/greyTextColor"
+                android:textColorLink="@android:color/holo_blue_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signUpButtonRegistration" />
+
+            <TextView
+                android:id="@+id/resetPasswordLink"
+                android:layout_width="wrap_content"
+                android:layout_height="23dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:text="@string/resetPasswordLink"
+                android:textColor="@color/greyTextColor"
+                android:textColorLink="@android:color/holo_blue_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/connectionLink" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

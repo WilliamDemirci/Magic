@@ -3,17 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/searchMenu"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/searchMenu"
         app:showAsAction="always" />
     <item
+        android:id="@+id/alertMenu"
         android:icon="@android:drawable/ic_popup_reminder"
         android:title="@string/alertMenu"
         app:showAsAction="never" />
     <item
+        android:id="@+id/refreshMenu"
         android:icon="@android:drawable/stat_notify_sync_noanim"
         android:title="@string/refreshMenu"
         app:showAsAction="always" />
-    <item android:title="@string/settingsMenu" />
-    <item android:title="@string/signOutMenu" />
+    <item
+        android:id="@+id/settingsMenu"
+        android:title="@string/settingsMenu" />
+    <item
+        android:id="@+id/signOutMenu"
+        android:title="@string/signOutMenu" />
 </menu>
