@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Magic</string>
+    <string name="loginText">Login to your account</string>
+    <string name="emailField">Email</string>
+    <string name="passwordField">Password</string>
+    <string name="connectionButton">Connection</string>
+    <string name="createAccountButton">Create an account</string>
+    <string name="forgotPasswordButton">Forgot password</string>
+</resources>
