@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.signOutMenu:
                 signOut();
                 return true;
+            case R.id.settingsMenu:
+                settingsIntent();
+                return true;
             default:
                 return false;
         }
@@ -61,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
     private void loginIntent() { // Login Activity Intent
         Intent intentLoginActivity = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intentLoginActivity);
+        finish();
+    }
+
+    private void settingsIntent() { // Settings Activity Intent
+        Intent intentSettingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intentSettingsActivity);
         finish();
     }
 }

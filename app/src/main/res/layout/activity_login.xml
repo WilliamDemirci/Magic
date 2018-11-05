@@ -8,11 +8,12 @@
     tools:context=".LoginActivity">
 
     <ScrollView
-        android:id="@+id/login_form"
+        android:id="@+id/loginForm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/email_login_form"
@@ -28,7 +29,7 @@
                 android:layout_marginTop="36dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/loginText"
-                android:textColor="@color/greyTextColor"
+                android:textColor="@color/grey"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,13 +41,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="204dp"
                 android:autofillHints=""
-                android:backgroundTint="@color/greyTextColor"
+                android:backgroundTint="@color/grey"
                 android:ems="10"
                 android:hint="@string/emailField"
                 android:inputType="textEmailAddress"
                 android:textAlignment="center"
-                android:textColor="@color/greyTextColor"
-                android:textColorHint="@color/greyTextColor"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
                 app:layout_constraintStart_toStartOf="@+id/logoRegistration"
                 app:layout_constraintTop_toBottomOf="@+id/logoRegistration" />
 
@@ -56,13 +57,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:autofillHints=""
-                android:backgroundTint="@color/greyTextColor"
+                android:backgroundTint="@color/grey"
                 android:ems="10"
                 android:hint="@string/passwordField"
                 android:inputType="textPassword"
                 android:textAlignment="center"
-                android:textColor="@color/greyTextColor"
-                android:textColorHint="@color/greyTextColor"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
                 app:layout_constraintStart_toStartOf="@+id/emailLogin"
                 app:layout_constraintTop_toBottomOf="@+id/emailLogin"
                 tools:ignore="TextFields" />
@@ -76,7 +77,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimaryDark"
                 android:text="@string/connectionButton"
-                android:textColor="@color/greyTextColor"
+                android:textColor="@color/grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/passwordLogin" />
@@ -91,7 +92,7 @@
                 android:autoLink="web"
                 android:linksClickable="true"
                 android:text="@string/resetPasswordLink"
-                android:textColor="@color/greyTextColor"
+                android:textColor="@color/grey"
                 android:textColorLink="@android:color/holo_blue_dark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +108,7 @@
                 android:autoLink="web"
                 android:linksClickable="true"
                 android:text="@string/createAccountLink"
-                android:textColor="@color/greyTextColor"
+                android:textColor="@color/grey"
                 android:textColorLink="@android:color/holo_blue_dark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

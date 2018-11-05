@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    accountSettingIntent();
+                                    settingsIntent();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -115,9 +115,9 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-    private void accountSettingIntent() { // Account setting Activity Intent
-        Intent intentAccountSettingdActivity = new Intent(RegisterActivity.this, AccountSettingActivity.class);
-        startActivity(intentAccountSettingdActivity);
+    private void settingsIntent() { // Account setting Activity Intent
+        Intent intentSettingsActivity = new Intent(RegisterActivity.this, SettingsActivity.class);
+        startActivity(intentSettingsActivity);
         finish();
     }
 }
