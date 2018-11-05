@@ -92,17 +92,25 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                     else {
 //                        Toast.makeText(SettingsActivity.this, "You already have permission", Toast.LENGTH_SHORT).show();
-                        // start picker to get image for cropping and then use the image in cropping activity
-                        CropImage.activity()
-                                .setGuidelines(CropImageView.Guidelines.ON)
-                                .setCropShape(CropImageView.CropShape.OVAL)
-                                .setAspectRatio(1,1)
-//                                .setMaxCropResultSize()
-                                .start(SettingsActivity.this);
+                        imagePicker();
                     }
+                }
+                // if we are running on an older version than Marshmallow (Android 6), we don't have to ask permission
+                else {
+                    imagePicker();
                 }
             }
         });
+    }
+
+    private void imagePicker() {
+        // start picker to get image for cropping and then use the image in cropping activity
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .setAspectRatio(1,1)
+//                                .setMaxCropResultSize()
+                .start(SettingsActivity.this);
     }
 
     @Override
