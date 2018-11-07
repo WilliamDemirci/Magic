@@ -17,26 +17,35 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsActivity extends AppCompatActivity {
     private CircleImageView imageSettingProfile;
+    private boolean imageHasChanged = false;
     private Uri profileImageUri = null;
     private EditText usernameSetting;
     private Button settingSaveButton;
     private ProgressBar settingSaveProgressBarSetting;
+    private String userId;
     private FirebaseAuth mAuth;
     private StorageReference mStorageRef;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,33 +58,66 @@ public class SettingsActivity extends AppCompatActivity {
         settingSaveProgressBarSetting = (ProgressBar) findViewById(R.id.settingSaveProgressBarSetting);
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
+        userId = mAuth.getCurrentUser().getUid();
+
+        // get username and image from database
+        db.collection("Users").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    if (task.getResult().exists()) { // if data exist
+                        String username = task.getResult().getString("username");
+                        String image = task.getResult().getString("image");
+
+                        usernameSetting.setText(username); // get username
+                        profileImageUri = Uri.parse(image);
+
+                        // placeholder image
+                        RequestOptions defaultImageRequest = new RequestOptions();
+                        defaultImageRequest.placeholder(R.mipmap.default_profile);
+
+                        // glide (caching images)
+                        Glide.with(SettingsActivity.this)
+                                .setDefaultRequestOptions(defaultImageRequest)
+                                .load(image).into(imageSettingProfile);
+
+                    }
+                }
+                else {
+                    Toast.makeText(SettingsActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         settingSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameSetting.getText().toString();
+                final String username = usernameSetting.getText().toString();
 
-                if(!TextUtils.isEmpty(username)) { // username is mandatory
-                    settingSaveProgressBarSetting.setVisibility(View.VISIBLE);
-                    String userId = mAuth.getCurrentUser().getUid();
+                if(imageHasChanged) {
+                    if(!TextUtils.isEmpty(username)) { // username is mandatory
+                        settingSaveProgressBarSetting.setVisibility(View.VISIBLE);
 
-                    if(profileImageUri != null) { // if there is an image, we save changes
-                        StorageReference imagePath = mStorageRef.child("profileImages").child(userId);
-                        imagePath.putFile(profileImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                if(task.isSuccessful()) {
-//                                Task<Uri> downloadUri = task.getResult().getMetadata().getReference().getDownloadUrl();
-                                    Toast.makeText(SettingsActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
-
+                        if(profileImageUri != null) { // if there is an image, we save changes
+                            StorageReference imagePath = mStorageRef.child("profileImages").child(userId + ".jpg");
+                            imagePath.putFile(profileImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                    if(task.isSuccessful()) {
+                                        storeFirestore(task, username);
+                                    }
+                                    else {
+                                        Toast.makeText(SettingsActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                    settingSaveProgressBarSetting.setVisibility(View.INVISIBLE);
                                 }
-                                else {
-                                    Toast.makeText(SettingsActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                                settingSaveProgressBarSetting.setVisibility(View.INVISIBLE);
-                            }
-                        });
+                            });
+                        }
                     }
+                }
+                else { // if image has not changed
+                    storeFirestore(null, username);
                 }
             }
         });
@@ -103,6 +145,33 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void storeFirestore(Task<UploadTask.TaskSnapshot> task, String username) {
+        Uri downloadUri;
+
+        if(task != null) { // if image has changed
+            downloadUri = task.getResult().getUploadSessionUri(); // problème : l'url stockée sur Firestore n'est pas valide
+        }
+        else { // if image hasn't changed
+            downloadUri = profileImageUri;
+        }
+        Map<String, String> userMap = new HashMap<>();
+        userMap.put("username", username);
+        userMap.put("image", downloadUri.toString());
+        db.collection("Users").document(userId).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    mainIntent();
+                }
+                else {
+                    Toast.makeText(SettingsActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+//                                Task<Uri> downloadUri = task.getResult().getMetadata().getReference().getDownloadUrl();
+        Toast.makeText(SettingsActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
+    }
+
     private void imagePicker() {
         // start picker to get image for cropping and then use the image in cropping activity
         CropImage.activity()
@@ -120,9 +189,16 @@ public class SettingsActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 profileImageUri = result.getUri();
                 imageSettingProfile.setImageURI(profileImageUri);
+                imageHasChanged = true;
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
         }
+    }
+
+    private void mainIntent() { // MainActivity Intent
+        Intent intentMainActivity = new Intent(SettingsActivity.this, MainActivity.class);
+        startActivity(intentMainActivity);
+        finish();
     }
 }

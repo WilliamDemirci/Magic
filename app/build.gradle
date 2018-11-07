@@ -29,11 +29,15 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    // CircleImageView https://github.com/hdodenhof/CircleImageView
+    // CircleImageView - https://github.com/hdodenhof/CircleImageView
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
-    // Android Image Cropper https://github.com/ArthurHub/Android-Image-Cropper
+    // Android Image Cropper - https://github.com/ArthurHub/Android-Image-Cropper
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
+
+    // Glide (image caching) - https://github.com/bumptech/glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     // Firebase
     implementation 'com.google.firebase:firebase-auth:16.0.1'
