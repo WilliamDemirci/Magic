@@ -1,9 +1,10 @@
 package com.williamdemirci.magic;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText emailRegistration;
     private EditText passwordRegistration;
     private EditText usernameRegistration;
+    private Toolbar toolbarRegistration;
     private Button registrationButton;
     private TextView loginLink;
     private TextView resetPasswordLink;
@@ -40,6 +42,11 @@ public class RegisterActivity extends AppCompatActivity {
         registrationButton = (Button) findViewById(R.id.signUpButtonRegistration);
         loginLink = (TextView) findViewById(R.id.connectionLink);
         resetPasswordLink = (TextView) findViewById(R.id.resetPasswordLink);
+        toolbarRegistration = (Toolbar) findViewById(R.id.registerToolbar);
+
+        // customize toolbar
+        setSupportActionBar(toolbarRegistration);
+        getSupportActionBar().setTitle("Registration");
 
         // registration button
         registrationButton.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    mainIntent();
+                                    settingsIntent();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -115,9 +122,9 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-    private void accountSettingIntent() { // Account setting Activity Intent
-        Intent intentAccountSettingdActivity = new Intent(RegisterActivity.this, AccountSettingActivity.class);
-        startActivity(intentAccountSettingdActivity);
+    private void settingsIntent() { // Account setting Activity Intent
+        Intent intentSettingsActivity = new Intent(RegisterActivity.this, SettingsActivity.class);
+        startActivity(intentSettingsActivity);
         finish();
     }
 }
