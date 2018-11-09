@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".NewDealActivity">
 
     <android.support.v7.widget.Toolbar
@@ -16,5 +17,242 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/newDealScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/newDealForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/titleNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:maxLength="150"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:inputType="text"
+                android:hint="@string/titleField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/linkNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:maxLength="500"
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:inputType="textUri"
+                android:hint="@string/linkOfTheDealField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleNewDeal" />
+
+            <ImageView
+                android:id="@+id/imageNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                android:src="@drawable/ic_add_a_photo_white_48dp"
+                android:background="@drawable/border_image_view_new_post"
+                app:layout_constraintTop_toBottomOf="@+id/linkNewDeal"/>
+
+            <EditText
+                android:id="@+id/priceNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:maxLength="15"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:inputType="numberDecimal"
+                android:hint="@string/priceField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageNewDeal" />
+
+            <EditText
+                android:id="@+id/normalPriceNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:maxLength="16"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:inputType="numberDecimal"
+                android:hint="@string/usualPriceField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/priceNewDeal" />
+
+            <EditText
+                android:id="@+id/shippingCostNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:maxLength="15"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:inputType="numberDecimal"
+                android:hint="@string/shippingCostField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/normalPriceNewDeal" />
+
+            <EditText
+                android:id="@+id/discountCodeNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:maxLength="500"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:inputType="text"
+                android:hint="@string/discountCodeField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shippingCostNewDeal" />
+
+            <Spinner
+                android:id="@+id/categoryNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:ems="10"
+                android:entries="@array/categoryArrays"
+                android:spinnerMode="dialog"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/discountCodeNewDeal" />
+
+            <EditText
+                android:id="@+id/startingDateNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:maxLength="20"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:inputType="text"
+                android:hint="@string/startingDateField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/categoryNewDeal" />
+
+            <EditText
+                android:id="@+id/endingDateNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:maxLength="20"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:inputType="text"
+                android:hint="@string/endingDateField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/startingDateNewDeal" />
+
+            <EditText
+                android:id="@+id/descriptionNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:maxLength="3000"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:inputType="textMultiLine"
+                android:hint="@string/descriptionField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/endingDateNewDeal" />
+
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

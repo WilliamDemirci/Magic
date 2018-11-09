@@ -19,4 +19,33 @@
     <string name="resetButton">Reset</string>
     <string name="connectionLink">Connect to your account</string>
     <string name="usernameField">Username</string>
+    <string name="linkOfTheDealField">Link of the deal</string>
+    <string name="titleField">Title</string>
+    <string name="usualPriceField">Usual price (Kč)</string>
+    <string name="priceField">Price (Kč)</string>
+    <string name="shippingCostField">Shipping cost (Kč)</string>
+    <string name="discountCodeField">Discount code</string>
+    <string name="categoryField">Category</string>
+    <string name="startingDateField">Starting date</string>
+    <string name="endingDateField">Ending date</string>
+    <string name="descriptionField">Description</string>
+    <string name="categoryPrompt">Select a category</string>
+    <string-array name="categoryArrays">
+        <item>Accessories &amp; gadgets</item>
+        <item>Application</item>
+        <item>Car / Motorcycle / Vehicle</item>
+        <item>Clothes</item>
+        <item>Culture &amp; entertainment</item>
+        <item>Discount code</item>
+        <item>Food</item>
+        <item>Health &amp; cosmetics</item>
+        <item>High tech</item>
+        <item>Home &amp; garden</item>
+        <item>Kids</item>
+        <item>Pets</item>
+        <item>Service</item>
+        <item>Sport</item>
+        <item>Travel</item>
+        <item>Other</item>
+    </string-array>
 </resources>
