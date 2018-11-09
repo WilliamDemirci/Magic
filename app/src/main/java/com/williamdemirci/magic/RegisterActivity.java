@@ -1,9 +1,10 @@
 package com.williamdemirci.magic;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText emailRegistration;
     private EditText passwordRegistration;
     private EditText usernameRegistration;
+    private Toolbar toolbarRegistration;
     private Button registrationButton;
     private TextView loginLink;
     private TextView resetPasswordLink;
@@ -40,6 +42,11 @@ public class RegisterActivity extends AppCompatActivity {
         registrationButton = (Button) findViewById(R.id.signUpButtonRegistration);
         loginLink = (TextView) findViewById(R.id.connectionLink);
         resetPasswordLink = (TextView) findViewById(R.id.resetPasswordLink);
+        toolbarRegistration = (Toolbar) findViewById(R.id.registerToolbar);
+
+        // customize toolbar
+        setSupportActionBar(toolbarRegistration);
+        getSupportActionBar().setTitle("Registration");
 
         // registration button
         registrationButton.setOnClickListener(new View.OnClickListener() {

@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +37,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsActivity extends AppCompatActivity {
+    private Toolbar toolbarSettings;
     private CircleImageView imageSettingProfile;
     private boolean imageHasChanged = false;
     private Uri profileImageUri = null;
@@ -60,6 +62,11 @@ public class SettingsActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
         userId = mAuth.getCurrentUser().getUid();
+        toolbarSettings = (Toolbar) findViewById(R.id.settingsToolbar);
+
+        // customize toolbar
+        setSupportActionBar(toolbarSettings);
+        getSupportActionBar().setTitle("Settings");
 
         // get username and image from database
         db.collection("Users").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

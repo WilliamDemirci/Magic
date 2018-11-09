@@ -8,19 +8,21 @@
         android:title="@string/searchMenu"
         app:showAsAction="always" />
     <item
-        android:id="@+id/alertMenu"
-        android:icon="@android:drawable/ic_popup_reminder"
-        android:title="@string/alertMenu"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/refreshMenu"
         android:icon="@android:drawable/stat_notify_sync_noanim"
         android:title="@string/refreshMenu"
         app:showAsAction="always" />
     <item
+        android:id="@+id/alertMenu"
+        android:icon="@android:drawable/ic_popup_reminder"
+        android:title="@string/alertMenu"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/settingsMenu"
-        android:title="@string/settingsMenu" />
+        android:title="@string/settingsMenu"
+        app:showAsAction="never" />
     <item
         android:id="@+id/signOutMenu"
-        android:title="@string/signOutMenu" />
+        android:title="@string/signOutMenu"
+        app:showAsAction="never" />
 </menu>

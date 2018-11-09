@@ -1,11 +1,13 @@
 package com.williamdemirci.magic;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -13,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Toolbar dealToolbar;
+    private FloatingActionButton addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,14 @@ public class MainActivity extends AppCompatActivity {
         // Toolbar
         dealToolbar = (Toolbar) findViewById(R.id.dealToolbar);
         setSupportActionBar(dealToolbar);
+
+        addButton = (FloatingActionButton) findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDealIntent();
+            }
+        });
     }
 
     @Override
@@ -31,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in. If not, switch to login activity
         FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser == null) {
-//            loginIntent();
-//        }
+        if(currentUser == null) {
+            loginIntent();
+        }
     }
 
     @Override
@@ -59,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
     private void signOut() {
         mAuth.signOut();
         loginIntent();
+    }
+
+    private void addDealIntent() { // Add a new deal intent
+        Intent newDealActivity = new Intent(MainActivity.this, NewDealActivity.class);
+        startActivity(newDealActivity);
+        finish();
     }
 
     private void loginIntent() { // Login Activity Intent

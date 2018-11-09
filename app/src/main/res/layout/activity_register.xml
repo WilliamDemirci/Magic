@@ -7,6 +7,17 @@
     android:background="@color/colorPrimary"
     tools:context=".RegisterActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/registerToolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
         android:id="@+id/registerForm"
         android:layout_width="match_parent"
@@ -18,25 +29,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <ImageView
                 android:id="@+id/logoRegistration"
-                android:layout_width="338dp"
-                android:layout_height="35dp"
+                android:layout_width="162dp"
+                android:layout_height="124dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="80dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/registrationText"
-                android:textColor="@color/grey"
-                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/googleg_standard_color_18" />
 
             <EditText
                 android:id="@+id/emailRegistration"
                 android:layout_width="335dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="204dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
                 android:autofillHints=""
                 android:backgroundTint="@color/grey"
                 android:ems="10"
@@ -45,7 +56,8 @@
                 android:textAlignment="center"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
-                app:layout_constraintStart_toStartOf="@+id/logoRegistration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/logoRegistration" />
 
             <EditText
@@ -61,7 +73,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
-                app:layout_constraintStart_toStartOf="@+id/logoRegistration"
+                app:layout_constraintStart_toStartOf="@+id/emailRegistration"
                 app:layout_constraintTop_toBottomOf="@+id/emailRegistration" />
 
             <EditText

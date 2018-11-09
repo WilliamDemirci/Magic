@@ -26,7 +26,10 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" android:theme="@style/Base.Theme.AppCompat"/>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".NewDealActivity"></activity>
     </application>
 
 </manifest>
