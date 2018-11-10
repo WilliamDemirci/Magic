@@ -30,5 +30,4 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".NewDealActivity"></activity>
     </application>
-
 </manifest>
