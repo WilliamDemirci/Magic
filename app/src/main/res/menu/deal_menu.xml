@@ -4,17 +4,16 @@
 
     <item
         android:id="@+id/searchMenu"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/searchMenu"
         app:showAsAction="always" />
     <item
         android:id="@+id/refreshMenu"
-        android:icon="@android:drawable/stat_notify_sync_noanim"
+        android:icon="@drawable/ic_refresh_white_24dp"
         android:title="@string/refreshMenu"
         app:showAsAction="always" />
     <item
         android:id="@+id/alertMenu"
-        android:icon="@android:drawable/ic_popup_reminder"
         android:title="@string/alertMenu"
         app:showAsAction="never" />
     <item
