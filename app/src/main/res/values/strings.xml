@@ -30,6 +30,7 @@
     <string name="endingDateField">Ending date</string>
     <string name="descriptionField">Description</string>
     <string name="categoryPrompt">Select a category</string>
+    <string name="notAGoodDeal">I don\'t think it\'s such a good deal :/</string>
     <string-array name="categoryArrays">
         <item>Accessories &amp; gadgets</item>
         <item>Application</item>

@@ -53,6 +53,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/labelTitleNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:hint="@string/priceField"
+                android:inputType="numberDecimal"
+                android:labelFor="@id/priceNewDeal"
+                android:text="@string/titleField"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/titleNewDeal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
             <EditText
                 android:id="@+id/linkNewDeal"
                 android:layout_width="match_parent"
@@ -73,6 +96,29 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleNewDeal" />
+
+            <TextView
+                android:id="@+id/labellinkNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:hint="@string/priceField"
+                android:inputType="numberDecimal"
+                android:labelFor="@id/linkNewDeal"
+                android:text="@string/linkOfTheDealField"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/linkNewDeal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/imageNewDeal"
@@ -98,7 +144,7 @@
                 android:autofillHints=""
                 android:backgroundTint="@color/grey"
                 android:ems="10"
-                android:maxLength="15"
+                android:maxLength="10"
                 android:textAlignment="center"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
@@ -108,6 +154,49 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageNewDeal" />
+
+            <TextView
+                android:id="@+id/labelPriceNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:hint="@string/priceField"
+                android:inputType="numberDecimal"
+                android:labelFor="@id/priceNewDeal"
+                android:text="@string/priceField"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/priceNewDeal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/notAGoodNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:text="@string/notAGoodDeal"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/priceNewDeal" />
 
             <EditText
                 android:id="@+id/normalPriceNewDeal"
@@ -119,7 +208,7 @@
                 android:autofillHints=""
                 android:backgroundTint="@color/grey"
                 android:ems="10"
-                android:maxLength="16"
+                android:maxLength="10"
                 android:textAlignment="center"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
@@ -129,6 +218,29 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/priceNewDeal" />
+
+            <TextView
+                android:id="@+id/labelNormalPriceNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:hint="@string/usualPriceField"
+                android:inputType="numberDecimal"
+                android:labelFor="@id/priceNewDeal"
+                android:text="@string/usualPriceField"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/normalPriceNewDeal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
                 android:id="@+id/shippingCostNewDeal"
@@ -140,7 +252,7 @@
                 android:autofillHints=""
                 android:backgroundTint="@color/grey"
                 android:ems="10"
-                android:maxLength="15"
+                android:maxLength="10"
                 android:textAlignment="center"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
@@ -150,6 +262,29 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/normalPriceNewDeal" />
+
+            <TextView
+                android:id="@+id/labelShippingCostNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:hint="@string/shippingCostField"
+                android:inputType="numberDecimal"
+                android:labelFor="@id/shippingCostNewDeal"
+                android:text="@string/shippingCostField"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/shippingCostNewDeal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
                 android:id="@+id/discountCodeNewDeal"
@@ -171,6 +306,29 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/shippingCostNewDeal" />
+
+            <TextView
+                android:id="@+id/labelDiscountCodeNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:hint="@string/discountCodeField"
+                android:inputType="numberDecimal"
+                android:labelFor="@id/discountCodeNewDeal"
+                android:text="@string/discountCodeField"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/discountCodeNewDeal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Spinner
                 android:id="@+id/categoryNewDeal"
@@ -210,6 +368,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categoryNewDeal" />
 
+            <TextView
+                android:id="@+id/labelStartingDateNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:hint="@string/startingDateField"
+                android:inputType="numberDecimal"
+                android:labelFor="@id/startingDateNewDeal"
+                android:text="@string/startingDateField"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/startingDateNewDeal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
             <EditText
                 android:id="@+id/endingDateNewDeal"
                 android:layout_width="match_parent"
@@ -231,6 +412,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/startingDateNewDeal" />
 
+            <TextView
+                android:id="@+id/labelEndingDateNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:hint="@string/endingDateField"
+                android:inputType="numberDecimal"
+                android:labelFor="@id/endingDateNewDeal"
+                android:text="@string/endingDateField"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/endingDateNewDeal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
             <EditText
                 android:id="@+id/descriptionNewDeal"
                 android:layout_width="match_parent"
@@ -251,7 +455,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/endingDateNewDeal" />
 
-
+            <TextView
+                android:id="@+id/labelDescriptionNewDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:hint="@string/descriptionField"
+                android:inputType="numberDecimal"
+                android:labelFor="@id/descriptionNewDeal"
+                android:text="@string/descriptionField"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/descriptionNewDeal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
