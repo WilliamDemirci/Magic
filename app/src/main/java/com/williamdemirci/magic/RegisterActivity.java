@@ -48,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         setSupportActionBar(toolbarRegistration);
         getSupportActionBar().setTitle("Registration");
 
+
         // registration button
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override

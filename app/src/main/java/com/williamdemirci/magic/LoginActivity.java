@@ -1,9 +1,9 @@
 package com.williamdemirci.magic;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView createAccountLink;
     private TextView resetPasswordLink;
     private FirebaseAuth mAuth;
+    private GoogleSignInOptions gso;
     private static final String TAG = "CONNECTION (Login Activity)";
 
     @Override
@@ -41,10 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         createAccountLink = (TextView) findViewById(R.id.createAccountLink);
         resetPasswordLink = (TextView) findViewById(R.id.resetPasswordLink);
         toolbarLogin = (Toolbar) findViewById(R.id.loginToolbar);
-
-        // customize toolbar
-        setSupportActionBar(toolbarLogin);
-        getSupportActionBar().setTitle("Login");
 
         // connection button
         connectionButton.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +89,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void googleConnection() {
+        // Configure Google Sign In
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -118,5 +124,11 @@ public class LoginActivity extends AppCompatActivity {
         Intent intentResetPasswordActivity = new Intent(LoginActivity.this, ResetPasswordActivity.class);
         startActivity(intentResetPasswordActivity);
         finish();
+    }
+
+    private void customizeToolbar() {
+        setSupportActionBar(toolbarLogin);
+        getSupportActionBar().setTitle("Login");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

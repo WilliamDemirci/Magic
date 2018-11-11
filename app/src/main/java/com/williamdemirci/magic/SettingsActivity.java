@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,6 +68,7 @@ public class SettingsActivity extends AppCompatActivity {
         // customize toolbar
         setSupportActionBar(toolbarSettings);
         getSupportActionBar().setTitle("Settings");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // get username and image from database
         db.collection("Users").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -207,5 +209,21 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intentMainActivity = new Intent(SettingsActivity.this, MainActivity.class);
         startActivity(intentMainActivity);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() { // on back button pressed (not on toolbar)
+        mainIntent();
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: // back button
+                mainIntent();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

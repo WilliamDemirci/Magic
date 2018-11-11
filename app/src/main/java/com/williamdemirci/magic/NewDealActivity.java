@@ -1,5 +1,6 @@
 package com.williamdemirci.magic;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -65,6 +66,7 @@ public class NewDealActivity extends AppCompatActivity {
     private void customizeToolbar() {
         setSupportActionBar(newDealToolbar);
         getSupportActionBar().setTitle("Post a new deal");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void displayLabel() {
@@ -308,15 +310,29 @@ public class NewDealActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void mainIntent() { // MainActivity Intent
+        Intent intentMainActivity = new Intent(NewDealActivity.this, MainActivity.class);
+        startActivity(intentMainActivity);
+        finish();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.validatePost) {
-            Toast.makeText(NewDealActivity.this, "ok button", Toast.LENGTH_LONG).show();
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home: // back button
+                mainIntent();
+                return true;
+            case R.id.validatePost: // save post (check button)
+                Toast.makeText(NewDealActivity.this, "ok button", Toast.LENGTH_LONG).show();
+                return true;
         }
-        else{
-            return false;
-        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() { // on back button pressed (not on toolbar)
+        mainIntent();
+        super.onBackPressed();
     }
 
     public void showDatePickerDialog(View v) {
