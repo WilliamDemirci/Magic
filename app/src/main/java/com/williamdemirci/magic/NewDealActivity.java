@@ -1,9 +1,10 @@
 package com.williamdemirci.magic;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -11,12 +12,12 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class NewDealActivity extends AppCompatActivity {
     // components
@@ -28,10 +29,10 @@ public class NewDealActivity extends AppCompatActivity {
     private EditText normalPriceNewDeal;
     private EditText shippingCostNewDeal;
     private EditText discountCodeNewDeal;
-    private Spinner spinnerCategoryNewDeal;
     private EditText startingDateNewDeal;
     private EditText endingDateNewDeal;
     private EditText descriptionNewDeal;
+    public TextView categoryNewDeal;
     private TextView notAGoodDeal;
 
     // TextView labels
@@ -41,9 +42,15 @@ public class NewDealActivity extends AppCompatActivity {
     private TextView labelNormalPriceNewDeal;
     private TextView labelShippingCostNewDeal;
     private TextView labelDiscountCodeNewDeal;
+    private TextView labelCategoryNewDeal;
     private TextView labelStartingDateNewDeal;
     private TextView labelEndingDateNewDeal;
     private TextView labelDescriptionNewDeal;
+
+    // for categories
+    private String[] listCategories;
+    private boolean[] checkedCategories;
+    private ArrayList<Integer> selectedCategoriesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +60,69 @@ public class NewDealActivity extends AppCompatActivity {
         componentsDeclaration();
         customizeToolbar();
         displayLabel();
-        customizeCategoryDropDownList();
+
+        setCategories();
     }
 
-    private void customizeCategoryDropDownList() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categoryArrays, R.layout.spinner_category_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategoryNewDeal.getBackground().setColorFilter(getResources().getColor(R.color.grey), PorterDuff.Mode.SRC_ATOP); // change arrow color
-        spinnerCategoryNewDeal.setAdapter(adapter);
+    private void setCategories() { // set categories using an AlertDialog
+        listCategories = getResources().getStringArray(R.array.categoriesArrays); // get checkbox StringArray
+        checkedCategories = new boolean[listCategories.length];
+
+        categoryNewDeal.setOnClickListener(new View.OnClickListener() { // on clic of category TextView
+            @Override
+            public void onClick(View v) {
+                // create an AlertDialog (pop-up)
+                AlertDialog.Builder categoriesBuilder = new AlertDialog.Builder(NewDealActivity.this);
+                categoriesBuilder.setTitle("Select categories");
+                categoriesBuilder.setMultiChoiceItems(listCategories, checkedCategories, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position, boolean isChecked) {
+                        // add or remove position of the checkbox to an IntegerArray
+                        if(isChecked) {
+                            selectedCategoriesList.add(position);
+                        }
+                        else {
+                            selectedCategoriesList.remove(Integer.valueOf(position));
+                        }
+                    }
+                });
+                categoriesBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() { // OK button
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String item = "";
+                        // create a string with all selected values separated by commas
+                        for(int i = 0; i < selectedCategoriesList.size(); i++) {
+                            item += listCategories[selectedCategoriesList.get(i)];
+                            if(i != selectedCategoriesList.size() - 1) {
+                                item += ", ";
+                            }
+                        }
+                        categoryNewDeal.setText(item);
+                    }
+                });
+
+                categoriesBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() { // Dismiss button
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                categoriesBuilder.setNeutralButton("Clear all", new DialogInterface.OnClickListener() { // Clear button
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(int i = 0; i < checkedCategories.length; i++) {
+                            checkedCategories[i] = false;
+                        }
+                        selectedCategoriesList.clear();
+                        categoryNewDeal.setText("");
+                    }
+                });
+
+                AlertDialog categoriesDialog = categoriesBuilder.create();
+                categoriesDialog.show();
+            }
+        });
     }
 
     private void customizeToolbar() {
@@ -209,6 +271,28 @@ public class NewDealActivity extends AppCompatActivity {
             }
         });
 
+        // categoryNewDeal
+        categoryNewDeal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(categoryNewDeal.getText().toString().equals("")) { // if field is not empty, display field label
+                    labelCategoryNewDeal.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    labelCategoryNewDeal.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         // startingDateNewDeal
         startingDateNewDeal.addTextChangedListener(new TextWatcher() {
             @Override
@@ -277,6 +361,8 @@ public class NewDealActivity extends AppCompatActivity {
     }
 
     private void componentsDeclaration() {
+        selectedCategoriesList = new ArrayList<>();
+
         // components
         newDealToolbar = (Toolbar) findViewById(R.id.newDealToolbar);
         titleNewDeal = (EditText) findViewById(R.id.titleNewDeal);
@@ -287,7 +373,7 @@ public class NewDealActivity extends AppCompatActivity {
         normalPriceNewDeal = (EditText) findViewById(R.id.normalPriceNewDeal);
         shippingCostNewDeal = (EditText) findViewById(R.id.shippingCostNewDeal);
         discountCodeNewDeal = (EditText) findViewById(R.id.discountCodeNewDeal);
-        spinnerCategoryNewDeal = (Spinner) findViewById(R.id.categoryNewDeal);
+        categoryNewDeal = (TextView) findViewById(R.id.categoryNewDeal);
         startingDateNewDeal = (EditText) findViewById(R.id.startingDateNewDeal);
         endingDateNewDeal = (EditText) findViewById(R.id.endingDateNewDeal);
         descriptionNewDeal = (EditText) findViewById(R.id.descriptionNewDeal);
@@ -302,6 +388,7 @@ public class NewDealActivity extends AppCompatActivity {
         labelStartingDateNewDeal= (TextView) findViewById(R.id.labelStartingDateNewDeal);
         labelEndingDateNewDeal= (TextView) findViewById(R.id.labelEndingDateNewDeal);
         labelDescriptionNewDeal= (TextView) findViewById(R.id.labelDescriptionNewDeal);
+        labelCategoryNewDeal= (TextView) findViewById(R.id.labelCategoryNewDeal);
     }
 
     @Override
@@ -323,6 +410,7 @@ public class NewDealActivity extends AppCompatActivity {
                 mainIntent();
                 return true;
             case R.id.validatePost: // save post (check button)
+                mainIntent();
                 Toast.makeText(NewDealActivity.this, "ok button", Toast.LENGTH_LONG).show();
                 return true;
         }
