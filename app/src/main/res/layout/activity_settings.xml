@@ -20,14 +20,15 @@
 
     <ProgressBar
         android:id="@+id/settingSaveProgressBarSetting"
-        style="?android:attr/progressBarStyleHorizontal"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:indeterminate="true"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="invisible"/>
+        app:layout_constraintTop_toBottomOf="@+id/settingsToolbar" />
 
     <ScrollView
         android:id="@+id/registerForm"

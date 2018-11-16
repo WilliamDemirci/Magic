@@ -98,7 +98,8 @@ public class SettingsActivity extends AppCompatActivity {
         // start picker to get image for cropping and then use the image in cropping activity
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setCropShape(CropImageView.CropShape.OVAL)
+//                .setCropShape(CropImageView.CropShape.OVAL)
+                .setCropShape(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? CropImageView.CropShape.RECTANGLE : CropImageView.CropShape.OVAL) // There is an uncorrected bug on Android 9 for CropSjape.OVAL (16/11/2018)
                 .setAspectRatio(1,1)
 //                                .setMaxCropResultSize()
                 .start(SettingsActivity.this);
@@ -109,6 +110,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         if(!TextUtils.isEmpty(username) && profileImageUri != null) { // username and image are mandatory
 //                    if(true) {
+            settingSaveProgressBarSetting.setVisibility(View.VISIBLE);
             if(imageHasChanged) {
                 File newImageFile = new File(profileImageUri.getPath());
                 try {
@@ -140,16 +142,16 @@ public class SettingsActivity extends AppCompatActivity {
                         else {
                             Toast.makeText(SettingsActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
+                        settingSaveProgressBarSetting.setVisibility(View.INVISIBLE);
                     }
                 });
             } // if(imagesHasChanged)
             else {
-
+                settingSaveProgressBarSetting.setVisibility(View.INVISIBLE);
                 storeFirestore(null, username);
 
             }
-        } // if(!TextUtils.isEmpty(username) && profileImageUri != null) { // username and image are mandatory
-        Toast.makeText(SettingsActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getUsernameAndProfileImageFromDatabase() {
@@ -178,6 +180,7 @@ public class SettingsActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(SettingsActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
+                settingSaveProgressBarSetting.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -217,6 +220,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
+                    Toast.makeText(SettingsActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
                     mainIntent();
                 }
                 else {
@@ -254,7 +258,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() { // on back button pressed (not on toolbar)
         saveSettings();
-        mainIntent();
         super.onBackPressed();
     }
 
@@ -263,7 +266,6 @@ public class SettingsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home: // back button
                 saveSettings();
-                mainIntent();
                 return true;
         }
         return super.onOptionsItemSelected(item);
