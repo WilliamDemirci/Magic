@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText passwordRegistration;
     private EditText usernameRegistration;
     private Toolbar toolbarRegistration;
+    private ProgressBar registerProgressBar;
     private Button registrationButton;
     private TextView loginLink;
     private TextView resetPasswordLink;
@@ -43,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         loginLink = (TextView) findViewById(R.id.connectionLink);
         resetPasswordLink = (TextView) findViewById(R.id.resetPasswordLink);
         toolbarRegistration = (Toolbar) findViewById(R.id.registerToolbar);
+        registerProgressBar = (ProgressBar) findViewById(R.id.registerProgressBar);
 
         // customize toolbar
         setSupportActionBar(toolbarRegistration);
@@ -53,26 +55,29 @@ public class RegisterActivity extends AppCompatActivity {
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                registerProgressBar.setVisibility(View.VISIBLE);
                 // get email & password values
                 String registrationEmailText = emailRegistration.getText().toString();
                 String registrationPasswordText = passwordRegistration.getText().toString();
-                String registrationUsernameText = usernameRegistration.getText().toString();
+//                String registrationUsernameText = usernameRegistration.getText().toString();
 
+                // create an account and automatically login
                 mAuth.createUserWithEmailAndPassword(registrationEmailText, registrationPasswordText)
                         .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "createUserWithEmail:success");
+//                                    Log.d(TAG, "createUserWithEmail:success");
+                                    Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     settingsIntent();
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
+//                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                    Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                                 }
+                                registerProgressBar.setVisibility(View.INVISIBLE);
                             }
                         });
             }

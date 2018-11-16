@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -268,6 +269,9 @@ public class SettingsActivity extends AppCompatActivity {
             case android.R.id.home: // back button
                 doBackup();
                 return true;
+            case R.id.signOutMenu:
+                signOut();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -280,5 +284,22 @@ public class SettingsActivity extends AppCompatActivity {
         else {
             mainIntent();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.log_out_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void signOut() {
+        mAuth.signOut();
+        loginIntent();
+    }
+
+    private void loginIntent() { // Login Activity Intent
+        Intent intentLoginActivity = new Intent(SettingsActivity.this, LoginActivity.class);
+        startActivity(intentLoginActivity);
+        finish();
     }
 }

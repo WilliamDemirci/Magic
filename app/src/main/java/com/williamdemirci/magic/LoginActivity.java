@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private Toolbar toolbarLogin;
+    private ProgressBar loginProgressBar;
     private EditText emailLogin;
     private EditText passwordLogin;
     private Button connectionButton;
@@ -34,20 +35,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        emailLogin = (EditText) findViewById(R.id.emailLogin);
-        passwordLogin = (EditText) findViewById(R.id.passwordLogin);
-        connectionButton = (Button) findViewById(R.id.connectionButtonLogin);
-        createAccountLink = (TextView) findViewById(R.id.createAccountLink);
-        resetPasswordLink = (TextView) findViewById(R.id.resetPasswordLink);
-        toolbarLogin = (Toolbar) findViewById(R.id.loginToolbar);
+        componentsDeclaration();
+        customizeToolbar();
 
         // connection button
         connectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loginProgressBar.setVisibility(View.VISIBLE);
                 // get email & password values
                 String loginEmailText = emailLogin.getText().toString();
                 String loginPasswordText = passwordLogin.getText().toString();
@@ -59,14 +54,15 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "signInWithEmail:success");
+//                                    Log.d(TAG, "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     mainIntent();
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+//                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
                                     Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                                 }
+                                loginProgressBar.setVisibility(View.INVISIBLE);
                             }
                         });
             }
@@ -87,6 +83,18 @@ public class LoginActivity extends AppCompatActivity {
                 resetPasswordIntent();
             }
         });
+    }
+
+    private void componentsDeclaration() {
+        mAuth = FirebaseAuth.getInstance();
+
+        emailLogin = (EditText) findViewById(R.id.emailLogin);
+        passwordLogin = (EditText) findViewById(R.id.passwordLogin);
+        connectionButton = (Button) findViewById(R.id.connectionButtonLogin);
+        createAccountLink = (TextView) findViewById(R.id.createAccountLink);
+        resetPasswordLink = (TextView) findViewById(R.id.resetPasswordLink);
+        toolbarLogin = (Toolbar) findViewById(R.id.loginToolbar);
+        loginProgressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
     }
 
     private void googleConnection() {
@@ -129,6 +137,5 @@ public class LoginActivity extends AppCompatActivity {
     private void customizeToolbar() {
         setSupportActionBar(toolbarLogin);
         getSupportActionBar().setTitle("Login");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
