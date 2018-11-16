@@ -54,9 +54,9 @@ public class SettingsActivity extends AppCompatActivity {
     private StorageReference mStorageRef;
     private FirebaseFirestore db;
     private Bitmap compressedImage;
-    private String actualUsername;
+    private String actualUsername = "";
     private String actualImage;
-    private String newUsername;
+    private String newUsername = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
