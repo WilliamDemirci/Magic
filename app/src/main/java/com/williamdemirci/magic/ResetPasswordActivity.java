@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +44,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mAuth = FirebaseAuth.getInstance();
                 email = (EditText) findViewById(R.id.emailResetPassword);
-                String emailAddress = email.getText().toString();
+                final String emailAddress = email.getText().toString();
 
                 if(!emailAddress.equals("")) {
                     mAuth.sendPasswordResetEmail(emailAddress)
@@ -53,12 +52,15 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Log.d(TAG, "Email sent.");
+//                                        Log.d(TAG, "Email sent.");
+                                        Toast.makeText(getApplicationContext(), "Email sent to " + emailAddress, Toast.LENGTH_SHORT).show();
+                                        loginIntent();
+                                    }
+                                    else {
+                                        Toast.makeText(getApplicationContext(), "Error : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
-                    Toast.makeText(getApplicationContext(), "Email send to " + emailAddress, Toast.LENGTH_SHORT).show();
-                    loginIntent();
                 }
             }
         });

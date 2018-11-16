@@ -9,22 +9,33 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/registerToolbar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:elevation="1dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <ProgressBar
+        android:id="@+id/registerProgressBar"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/registerToolbar" />
 
     <ScrollView
-        android:id="@+id/registerForm"
+        android:id="@+id/registerScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/email_login_form"
+            android:id="@+id/registerForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -39,7 +50,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/googleg_standard_color_18" />
+                app:srcCompat="@mipmap/ic_launcher" />
 
             <EditText
                 android:id="@+id/emailRegistration"
@@ -61,22 +72,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/logoRegistration" />
 
             <EditText
-                android:id="@+id/usernameRegistration"
-                android:layout_width="335dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:autofillHints=""
-                android:backgroundTint="@color/grey"
-                android:ems="10"
-                android:hint="@string/usernameField"
-                android:inputType="textPersonName"
-                android:textAlignment="center"
-                android:textColor="@color/grey"
-                android:textColorHint="@color/grey"
-                app:layout_constraintStart_toStartOf="@+id/emailRegistration"
-                app:layout_constraintTop_toBottomOf="@+id/emailRegistration" />
-
-            <EditText
                 android:id="@+id/passwordRegistration"
                 android:layout_width="335dp"
                 android:layout_height="wrap_content"
@@ -90,7 +85,23 @@
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
                 app:layout_constraintStart_toStartOf="@+id/emailRegistration"
-                app:layout_constraintTop_toBottomOf="@+id/usernameRegistration"
+                app:layout_constraintTop_toBottomOf="@+id/emailRegistration" />
+
+            <EditText
+                android:id="@+id/passwordRegistrationVerification"
+                android:layout_width="335dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/grey"
+                android:ems="10"
+                android:hint="@string/passwordVerification"
+                android:inputType="textPassword"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey"
+                app:layout_constraintStart_toStartOf="@+id/emailRegistration"
+                app:layout_constraintTop_toBottomOf="@+id/passwordRegistration"
                 tools:ignore="TextFields" />
 
             <Button
@@ -106,7 +117,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordRegistration" />
+                app:layout_constraintTop_toBottomOf="@+id/passwordRegistrationVerification" />
 
             <TextView
                 android:id="@+id/connectionLink"

@@ -25,20 +25,21 @@
     <string name="priceField">Price (Kč)</string>
     <string name="shippingCostField">Shipping cost (Kč)</string>
     <string name="discountCodeField">Discount code</string>
-    <string name="categoryField">Category</string>
+    <string name="selectCategoriesField">Select categories</string>
     <string name="startingDateField">Starting date</string>
     <string name="endingDateField">Ending date</string>
     <string name="descriptionField">Description</string>
     <string name="categoryPrompt">Select a category</string>
     <string name="notAGoodDeal">I don\'t think it\'s such a good deal :/</string>
-    <string-array name="categoryArrays">
+    <string-array name="categoriesArrays">
         <item>Accessories &amp; gadgets</item>
-        <item>Application</item>
+        <item>Application &amp; software</item>
         <item>Car / Motorcycle / Vehicle</item>
         <item>Clothes</item>
         <item>Culture &amp; entertainment</item>
         <item>Discount code</item>
         <item>Food</item>
+        <item>Free</item>
         <item>Health &amp; cosmetics</item>
         <item>High tech</item>
         <item>Home &amp; garden</item>
@@ -49,4 +50,9 @@
         <item>Travel</item>
         <item>Other</item>
     </string-array>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="passwordVerification">Password verification</string>
 </resources>
