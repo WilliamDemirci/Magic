@@ -53,6 +53,9 @@ public class SettingsActivity extends AppCompatActivity {
     private StorageReference mStorageRef;
     private FirebaseFirestore db;
     private Bitmap compressedImage;
+    private String actualUsername;
+    private String actualImage;
+    private String newUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void saveSettings() {
-        final String username = usernameSetting.getText().toString();
-
-        if(!TextUtils.isEmpty(username) && profileImageUri != null) { // username and image are mandatory
+        if(!TextUtils.isEmpty(newUsername) && profileImageUri != null) { // username and image are mandatory
 //                    if(true) {
             settingSaveProgressBarSetting.setVisibility(View.VISIBLE);
             if(imageHasChanged) {
@@ -137,7 +138,7 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if (task.isSuccessful()) {
-                            storeFirestore(task, username);
+                            storeFirestore(task, newUsername);
                         }
                         else {
                             Toast.makeText(SettingsActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -148,7 +149,7 @@ public class SettingsActivity extends AppCompatActivity {
             } // if(imagesHasChanged)
             else {
                 settingSaveProgressBarSetting.setVisibility(View.INVISIBLE);
-                storeFirestore(null, username);
+                storeFirestore(null, newUsername);
 
             }
         }
@@ -161,11 +162,11 @@ public class SettingsActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
                     if (task.getResult().exists()) { // if data exist
-                        String username = task.getResult().getString("username");
-                        String image = task.getResult().getString("image");
+                        actualUsername = task.getResult().getString("username");
+                        actualImage = task.getResult().getString("image");
 
-                        usernameSetting.setText(username);
-                        profileImageUri = Uri.parse(image);
+                        usernameSetting.setText(actualUsername);
+                        profileImageUri = Uri.parse(actualImage);
 
                         // placeholder image
                         RequestOptions defaultImageRequest = new RequestOptions();
@@ -174,7 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
                         // glide (caching images)
                         Glide.with(SettingsActivity.this)
                                 .setDefaultRequestOptions(defaultImageRequest)
-                                .load(image).into(imageSettingProfile);
+                                .load(actualImage).into(imageSettingProfile);
                     }
                 }
                 else {
@@ -257,7 +258,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() { // on back button pressed (not on toolbar)
-        saveSettings();
+        doBackup();
         super.onBackPressed();
     }
 
@@ -265,9 +266,19 @@ public class SettingsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: // back button
-                saveSettings();
+                doBackup();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doBackup() { // make save only if there is a modification
+        newUsername = usernameSetting.getText().toString();
+        if(!actualUsername.equals(newUsername) || imageHasChanged) {
+            saveSettings();
+        }
+        else {
+            mainIntent();
+        }
     }
 }
