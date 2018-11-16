@@ -70,24 +70,38 @@ public class SettingsActivity extends AppCompatActivity {
         imageSettingProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // check if we are running on at least Android Marshmallow (Android 6)
-                // to request read storage permission
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if(ContextCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//                        Toast.makeText(SettingsActivity.this, "Permission denied", Toast.LENGTH_SHORT).show();
-                        ActivityCompat.requestPermissions(SettingsActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-                    }
-                    else {
-//                        Toast.makeText(SettingsActivity.this, "You already have permission", Toast.LENGTH_SHORT).show();
-                        imagePicker();
-                    }
-                }
-                // if we are running on an older version than Marshmallow (Android 6), we don't have to ask permission
-                else {
-                    imagePicker();
-                }
+                imagePicker();
             }
         });
+    }
+
+    private void imagePicker() {
+        // check if we are running on at least Android Marshmallow (Android 6)
+        // to request read storage permission
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if(ContextCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                        Toast.makeText(SettingsActivity.this, "Permission denied", Toast.LENGTH_SHORT).show();
+                ActivityCompat.requestPermissions(SettingsActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            }
+            else {
+//                        Toast.makeText(SettingsActivity.this, "You already have permission", Toast.LENGTH_SHORT).show();
+                runImagePicker();
+            }
+        }
+        // if we are running on an older version than Marshmallow (Android 6), we don't have to ask permission
+        else {
+            runImagePicker();
+        }
+    }
+
+    private void runImagePicker() {
+        // start picker to get image for cropping and then use the image in cropping activity
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .setAspectRatio(1,1)
+//                                .setMaxCropResultSize()
+                .start(SettingsActivity.this);
     }
 
     private void saveSettings() {
@@ -212,16 +226,6 @@ public class SettingsActivity extends AppCompatActivity {
         });
 //                                Task<Uri> downloadUri = task.getResult().getMetadata().getReference().getDownloadUrl();
 //        Toast.makeText(SettingsActivity.this, "Changes saved", Toast.LENGTH_SHORT).show();
-    }
-
-    private void imagePicker() {
-        // start picker to get image for cropping and then use the image in cropping activity
-        CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setCropShape(CropImageView.CropShape.OVAL)
-                .setAspectRatio(1,1)
-//                                .setMaxCropResultSize()
-                .start(SettingsActivity.this);
     }
 
     @Override
