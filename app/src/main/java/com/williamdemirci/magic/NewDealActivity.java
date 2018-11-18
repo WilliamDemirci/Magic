@@ -4,12 +4,12 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,10 +39,15 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import id.zelory.compressor.Compressor;
 
 public class NewDealActivity extends AppCompatActivity {
     // components
@@ -79,12 +85,16 @@ public class NewDealActivity extends AppCompatActivity {
 
     // for image
     private Uri imageUri = null;
+    private String downloadUri = "";
+    private String downloadthumbUri = "";
 
     // for Firebase
     private StorageReference mStorageRef;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private String currentUserId;
+    private Map<String, Object> dealMap;
+    private Bitmap compressedImageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +157,7 @@ public class NewDealActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 imageUri = result.getUri();
                 imageNewDeal.setImageURI(imageUri);
+                firebaseImagePublishing(); // save directly file on Firebase to save time and to fix a bug
             }
             else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(NewDealActivity.this, "Error : " + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
@@ -456,6 +467,7 @@ public class NewDealActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
+        dealMap = new HashMap<>();
 
         // for categories
         selectedCategoriesList = new ArrayList<>();
@@ -516,62 +528,111 @@ public class NewDealActivity extends AppCompatActivity {
     }
 
     private void publishDeal() {
-        // Mandatory fields
+        // Mandatory fields without image
         final String title = titleNewDeal.getText().toString();
         final String price = priceNewDeal.getText().toString();
         final String categories = categoryNewDeal.getText().toString();
         final String description = descriptionNewDeal.getText().toString();
 
-        if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(categories) && !TextUtils.isEmpty(description)) {
+        if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(categories) && !TextUtils.isEmpty(description) && !TextUtils.isEmpty(downloadUri)) { // mandatory fields must be filled in
             progressBarNewDeal.setVisibility(View.VISIBLE);
-            // store image with a unique ID name
-            String fileName = UUID.randomUUID().toString();
-            StorageReference filePath = mStorageRef.child("dealImages").child(fileName + ".jpg");
-            filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if(task.isSuccessful()) {
-                        String downloadUri = task.getResult().getDownloadUrl().toString();
-                        Map<String, Object> dealMap = new HashMap<>();
-                        // mandatory fields
-                        dealMap.put("userId", currentUserId);
-                        dealMap.put("timestamp", FieldValue.serverTimestamp());
-                        dealMap.put("title", title);
-                        dealMap.put("price", price);
-                        dealMap.put("categories", categories);
-                        dealMap.put("description", description);
-                        // other fields
-                        dealMap.put("image", downloadUri);
-                        db.collection("Deals").add(dealMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                if(task.isSuccessful()) {
-                                    Toast.makeText(NewDealActivity.this, "New deal published", Toast.LENGTH_LONG).show();
-                                    mainIntent();
-                                }
-                                else {
-                                    Toast.makeText(NewDealActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                                progressBarNewDeal.setVisibility(View.INVISIBLE);
-                            }
-                        });
-                    }
-                    else {
-                        progressBarNewDeal.setVisibility(View.INVISIBLE);
-                    }
-                }
-            });
+
+            // get all non mandatory data
+            final String link = linkNewDeal.getText().toString();
+            final String normalPrice = normalPriceNewDeal.getText().toString();
+            final String shippingCost = shippingCostNewDeal.getText().toString();
+            final String discountCode = discountCodeNewDeal.getText().toString();
+            final String startingDate = startingDateNewDeal.getText().toString();
+            final String endingDate = endingDateNewDeal.getText().toString();
+
+            // set deal HashMap
+            // technical data
+            dealMap.put("userId", currentUserId);
+            dealMap.put("timestamp", FieldValue.serverTimestamp());
+            // mandatory fields
+            dealMap.put("title", title);
+            dealMap.put("price", price);
+            dealMap.put("categories", categories);
+            dealMap.put("description", description);
+            dealMap.put("image", downloadUri);
+            dealMap.put("thumb", downloadthumbUri);
+            // other fields
+            dealMap.put("link", link);
+            dealMap.put("normalPrice", normalPrice);
+            dealMap.put("shippingCost", shippingCost);
+            dealMap.put("discountCode", discountCode);
+            dealMap.put("startingDate", startingDate);
+            dealMap.put("endingDate", endingDate);
+
+            firebaseDealPublishing();
         }
     }
 
-    @Override
-    public void onBackPressed() { // on back button pressed (not on toolbar)
-        mainIntent();
-        super.onBackPressed();
+    private void firebaseImagePublishing() {
+        // store image with a unique ID name
+        final String fileName = UUID.randomUUID().toString();
+        StorageReference filePath = mStorageRef.child("dealImages").child(fileName + ".jpg");
+        filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if(task.isSuccessful()) {
+                    File newImageFile = new File(imageUri.getPath());
+                    try {
+                        compressedImageFile = new Compressor(NewDealActivity.this)
+                                .setMaxHeight(480)
+                                .setMaxWidth(640)
+                                .setQuality(10) // same results for 50 and 10 :/
+//                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+//                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
+                                .compressToBitmap(newImageFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    downloadUri = task.getResult().getDownloadUrl().toString();
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    compressedImageFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] thumbData = baos.toByteArray();
+
+                    UploadTask uploadTask = mStorageRef.child("thumbsImages").child(fileName + ".jpg").putBytes(thumbData);
+
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            downloadthumbUri = taskSnapshot.getDownloadUrl().toString();
+                        }});
+                }
+                else {
+                    Toast.makeText(NewDealActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
+    private void firebaseDealPublishing() {
+        db.collection("Deals").add(dealMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(NewDealActivity.this, "Thanks! New deal published", Toast.LENGTH_LONG).show();
+                    mainIntent();
+                }
+                else {
+                    Toast.makeText(NewDealActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+                progressBarNewDeal.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // on back button pressed (not on toolbar)
+        // TODO if at least one field is not empty, display an alert dialog 'do you really want to abandon the creation of the deal?' or something like that
+        // TODO delete image from Firebase
+        // TODO do the two elements above for onOptionsItemSelected -> Home button
+        mainIntent();
+        super.onBackPressed();
     }
 }

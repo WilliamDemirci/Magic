@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         dealToolbar = (Toolbar) findViewById(R.id.dealToolbar);
         setSupportActionBar(dealToolbar);
 
+        // Floating Action Button (add a new deal)
         addButton = (FloatingActionButton) findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
