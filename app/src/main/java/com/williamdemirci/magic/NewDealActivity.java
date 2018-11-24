@@ -384,6 +384,12 @@ public class NewDealActivity extends AppCompatActivity {
                     labelCategoryNewDeal.setVisibility(View.INVISIBLE);
                 }
                 else {
+                    if(categoryNewDeal.getText().toString().contains(",")) {
+                        labelCategoryNewDeal.setText("Categories");
+                    }
+                    else {
+                        labelCategoryNewDeal.setText("Category");
+                    }
                     labelCategoryNewDeal.setVisibility(View.VISIBLE);
                 }
             }
@@ -491,7 +497,7 @@ public class NewDealActivity extends AppCompatActivity {
 
         // labels
         labelTitleNewDeal= (TextView) findViewById(R.id.labelTitleNewDeal);
-        labelLinkNewDeal= (TextView) findViewById(R.id.labellinkNewDeal);
+        labelLinkNewDeal= (TextView) findViewById(R.id.labelLinkNewDeal);
         labelPriceNewDeal = (TextView) findViewById(R.id.labelPriceNewDeal);
         labelNormalPriceNewDeal= (TextView) findViewById(R.id.labelNormalPriceNewDeal);
         labelShippingCostNewDeal= (TextView) findViewById(R.id.labelShippingCostNewDeal);
