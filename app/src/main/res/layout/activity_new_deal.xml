@@ -478,6 +478,7 @@
                 android:layout_marginBottom="8dp"
                 android:elevation="1dp"
                 android:visibility="invisible"
+                android:background="@color/colorPrimaryDark"
                 app:layout_constraintBottom_toBottomOf="@+id/imageNewDeal"
                 app:layout_constraintEnd_toEndOf="@+id/imageNewDeal"
                 app:srcCompat="@drawable/ic_delete_forever_white_24dp" />
