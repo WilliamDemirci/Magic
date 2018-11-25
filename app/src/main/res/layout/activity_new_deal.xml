@@ -345,7 +345,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <EditText
+            <TextView
                 android:id="@+id/startingDateNewDeal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -355,11 +355,10 @@
                 android:backgroundTint="@color/grey"
                 android:ems="10"
                 android:hint="@string/startingDateField"
-                android:inputType="text"
-                android:maxLength="20"
                 android:textAlignment="center"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
+                android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -384,7 +383,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <EditText
+            <TextView
                 android:id="@+id/endingDateNewDeal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -394,11 +393,10 @@
                 android:backgroundTint="@color/grey"
                 android:ems="10"
                 android:hint="@string/endingDateField"
-                android:inputType="text"
-                android:maxLength="20"
                 android:textAlignment="center"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
+                android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,7 @@
 package com.williamdemirci.magic;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +21,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -43,6 +45,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -59,8 +62,8 @@ public class NewDealActivity extends AppCompatActivity {
     private EditText normalPriceNewDeal;
     private EditText shippingCostNewDeal;
     private EditText discountCodeNewDeal;
-    private EditText startingDateNewDeal;
-    private EditText endingDateNewDeal;
+    private TextView startingDateNewDeal;
+    private TextView endingDateNewDeal;
     private EditText descriptionNewDeal;
     public TextView categoryNewDeal;
     private TextView notAGoodDeal;
@@ -86,7 +89,7 @@ public class NewDealActivity extends AppCompatActivity {
     // for image
     private Uri imageUri = null;
     private String downloadUri = "";
-    private String downloadthumbUri = "";
+    private String downloadThumbUri = "";
 
     // for Firebase
     private StorageReference mStorageRef;
@@ -96,17 +99,77 @@ public class NewDealActivity extends AppCompatActivity {
     private Map<String, Object> dealMap;
     private Bitmap compressedImageFile;
 
+    // for dates
+    private DatePickerDialog.OnDateSetListener startingDate;
+    private DatePickerDialog.OnDateSetListener endingDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_deal);
-
+        
         componentsDeclaration();
         customizeToolbar();
         displayLabel();
 
         setImage();
         setCategories();
+        setDates();
+    }
+
+    private void setDates() {
+        // set starting and ending dates
+        // set starting date
+        startingDateNewDeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        NewDealActivity.this,
+                        android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK,
+                        startingDate,
+                        year,month,day);
+                dialog.show();
+            }
+        });
+
+        startingDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                String date = day + "/" + (month+1) + "/" + year;
+                startingDateNewDeal.setText(date);
+            }
+        };
+
+        // set ending date
+        endingDateNewDeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        NewDealActivity.this,
+                        android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK,
+                        endingDate,
+                        year,month,day);
+                dialog.show();
+            }
+        });
+
+        endingDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                String date = day + "/" + (month+1) + "/" + year;
+                endingDateNewDeal.setText(date);
+            }
+        };
     }
 
     private void setImage() { // set an image for the new deal
@@ -489,8 +552,8 @@ public class NewDealActivity extends AppCompatActivity {
         shippingCostNewDeal = (EditText) findViewById(R.id.shippingCostNewDeal);
         discountCodeNewDeal = (EditText) findViewById(R.id.discountCodeNewDeal);
         categoryNewDeal = (TextView) findViewById(R.id.categoryNewDeal);
-        startingDateNewDeal = (EditText) findViewById(R.id.startingDateNewDeal);
-        endingDateNewDeal = (EditText) findViewById(R.id.endingDateNewDeal);
+        startingDateNewDeal = (TextView) findViewById(R.id.startingDateNewDeal);
+        endingDateNewDeal = (TextView) findViewById(R.id.endingDateNewDeal);
         descriptionNewDeal = (EditText) findViewById(R.id.descriptionNewDeal);
         progressBarNewDeal = (ProgressBar) findViewById(R.id.progressBarNewDeal);
 
@@ -561,7 +624,7 @@ public class NewDealActivity extends AppCompatActivity {
             dealMap.put("categories", categories);
             dealMap.put("description", description);
             dealMap.put("image", downloadUri);
-            dealMap.put("thumb", downloadthumbUri);
+            dealMap.put("thumb", downloadThumbUri);
             // other fields
             dealMap.put("link", link);
             dealMap.put("normalPrice", normalPrice);
@@ -606,7 +669,7 @@ public class NewDealActivity extends AppCompatActivity {
                     uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            downloadthumbUri = taskSnapshot.getDownloadUrl().toString();
+                            downloadThumbUri = taskSnapshot.getDownloadUrl().toString();
                         }});
                 }
                 else {
