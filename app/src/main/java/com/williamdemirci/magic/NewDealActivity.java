@@ -69,6 +69,8 @@ public class NewDealActivity extends AppCompatActivity {
     private TextView notAGoodDeal;
     private ProgressBar progressBarNewDeal;
     private ImageView deleteImage;
+    private ImageView deleteStartingDate;
+    private ImageView deleteEndingDate;
 
     // TextView labels
     private TextView labelTitleNewDeal;
@@ -142,8 +144,8 @@ public class NewDealActivity extends AppCompatActivity {
         startingDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                String date = day + "/" + (month+1) + "/" + year;
-                startingDateNewDeal.setText(date);
+                startingDateNewDeal.setText(day + "/" + (month+1) + "/" + year);
+                deleteStartingDate.setVisibility(View.VISIBLE);
             }
         };
 
@@ -168,10 +170,28 @@ public class NewDealActivity extends AppCompatActivity {
         endingDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                String date = day + "/" + (month+1) + "/" + year;
-                endingDateNewDeal.setText(date);
+                endingDateNewDeal.setText(day + "/" + (month+1) + "/" + year);
+                deleteEndingDate.setVisibility(View.VISIBLE);
             }
         };
+
+        // if deleteStartingDate button is visible (if startingDateNewDeal is not empty)
+        deleteStartingDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startingDateNewDeal.setText("");
+                deleteStartingDate.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        // if deleteEndingDate button is visible (if endingDateNewDeal is not empty)
+        deleteEndingDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endingDateNewDeal.setText("");
+                deleteEndingDate.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     private void setImage() { // set an image for the new deal
@@ -585,6 +605,8 @@ public class NewDealActivity extends AppCompatActivity {
         descriptionNewDeal = (EditText) findViewById(R.id.descriptionNewDeal);
         progressBarNewDeal = (ProgressBar) findViewById(R.id.progressBarNewDeal);
         deleteImage = (ImageView) findViewById(R.id.deleteImage);
+        deleteStartingDate = (ImageView) findViewById(R.id.deleteStartingDate);
+        deleteEndingDate = (ImageView) findViewById(R.id.deleteEndingDate);
 
         // labels
         labelTitleNewDeal= (TextView) findViewById(R.id.labelTitleNewDeal);
