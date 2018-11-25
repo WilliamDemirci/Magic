@@ -32,7 +32,9 @@
         android:id="@+id/newDealScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/newDealForm"
@@ -198,8 +200,8 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="8dp"
                 android:backgroundTint="@color/grey"
-                android:hint="@string/usualPriceField"
                 android:ems="10"
+                android:hint="@string/usualPriceField"
                 android:inputType="numberDecimal"
                 android:maxLength="10"
                 android:textAlignment="center"
@@ -307,7 +309,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
+            <EditText
                 android:id="@+id/categoryNewDeal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -321,6 +323,9 @@
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
                 android:textSize="18dp"
+                android:inputType="none"
+                android:focusable="false"
+                android:cursorVisible="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -345,7 +350,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
+            <EditText
                 android:id="@+id/startingDateNewDeal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -359,6 +364,9 @@
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
                 android:textSize="18dp"
+                android:inputType="none"
+                android:focusable="false"
+                android:cursorVisible="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -383,7 +391,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
+            <EditText
                 android:id="@+id/endingDateNewDeal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -397,6 +405,9 @@
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"
                 android:textSize="18dp"
+                android:inputType="none"
+                android:focusable="false"
+                android:cursorVisible="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -465,34 +476,34 @@
                 android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:elevation="1dp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/imageNewDeal"
                 app:layout_constraintEnd_toEndOf="@+id/imageNewDeal"
-                android:visibility="invisible"
-                android:elevation="1dp"
                 app:srcCompat="@drawable/ic_delete_forever_white_24dp" />
 
             <ImageView
                 android:id="@+id/deleteStartingDate"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="0dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="1dp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/startingDateNewDeal"
                 app:layout_constraintEnd_toEndOf="@+id/startingDateNewDeal"
-                android:visibility="invisible"
-                android:elevation="1dp"
                 app:srcCompat="@drawable/ic_delete_forever_white_24dp" />
 
             <ImageView
                 android:id="@+id/deleteEndingDate"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="0dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="1dp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/endingDateNewDeal"
                 app:layout_constraintEnd_toEndOf="@+id/endingDateNewDeal"
-                android:visibility="invisible"
-                android:elevation="1dp"
                 app:srcCompat="@drawable/ic_delete_forever_white_24dp" />
 
         </android.support.constraint.ConstraintLayout>

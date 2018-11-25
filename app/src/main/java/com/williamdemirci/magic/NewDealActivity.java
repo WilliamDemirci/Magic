@@ -62,10 +62,10 @@ public class NewDealActivity extends AppCompatActivity {
     private EditText normalPriceNewDeal;
     private EditText shippingCostNewDeal;
     private EditText discountCodeNewDeal;
-    private TextView startingDateNewDeal;
-    private TextView endingDateNewDeal;
+    private EditText startingDateNewDeal;
+    private EditText endingDateNewDeal;
     private EditText descriptionNewDeal;
-    public TextView categoryNewDeal;
+    private EditText categoryNewDeal;
     private TextView notAGoodDeal;
     private ProgressBar progressBarNewDeal;
     private ImageView deleteImage;
@@ -599,9 +599,9 @@ public class NewDealActivity extends AppCompatActivity {
         normalPriceNewDeal = (EditText) findViewById(R.id.normalPriceNewDeal);
         shippingCostNewDeal = (EditText) findViewById(R.id.shippingCostNewDeal);
         discountCodeNewDeal = (EditText) findViewById(R.id.discountCodeNewDeal);
-        categoryNewDeal = (TextView) findViewById(R.id.categoryNewDeal);
-        startingDateNewDeal = (TextView) findViewById(R.id.startingDateNewDeal);
-        endingDateNewDeal = (TextView) findViewById(R.id.endingDateNewDeal);
+        categoryNewDeal = (EditText) findViewById(R.id.categoryNewDeal); // use EditText instead of TextView because I can't add the underline bar under the field ><
+        startingDateNewDeal = (EditText) findViewById(R.id.startingDateNewDeal); // use EditText instead of TextView because I can't add the underline bar under the field ><
+        endingDateNewDeal = (EditText) findViewById(R.id.endingDateNewDeal); // use EditText instead of TextView because I can't add the underline bar under the field ><
         descriptionNewDeal = (EditText) findViewById(R.id.descriptionNewDeal);
         progressBarNewDeal = (ProgressBar) findViewById(R.id.progressBarNewDeal);
         deleteImage = (ImageView) findViewById(R.id.deleteImage);
