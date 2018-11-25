@@ -194,10 +194,8 @@ public class NewDealActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         imageNewDeal.setImageResource(0);
                         deleteImage.setVisibility(View.INVISIBLE);
-                        imageSuccessfullyUploaded = false;
                         imageNewDeal.setImageResource(R.drawable.ic_add_a_photo_white_48dp); // restore default image
-                        // delete images from database cause we download it before submit
-                        deleteImagesFromFirebase();
+                        deleteImagesFromFirebase(); // delete images from database cause we download it before submit
                     }
                 });
                 alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -617,10 +615,7 @@ public class NewDealActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: // back button
-                if(imageSuccessfullyUploaded) { // delete images from database cause we download it before submit
-                    deleteImagesFromFirebase();
-                }
-                mainIntent();
+                cancelCreation();
                 return true;
             case R.id.validatePost: // save post (check button)
                 publishDeal();
@@ -734,15 +729,40 @@ public class NewDealActivity extends AppCompatActivity {
         // on back button pressed (not on toolbar)
         // TODO if at least one field is not empty, display an alert dialog 'do you really want to abandon the creation of the deal?' or something like that
         // TODO do the two elements above for onOptionsItemSelected -> Home button
-        if(imageSuccessfullyUploaded) { // delete images from database cause we download it before submit
-            deleteImagesFromFirebase();
-        }
-        mainIntent();
-        super.onBackPressed();
+        cancelCreation();
+//        super.onBackPressed();
     }
 
     private void deleteImagesFromFirebase() {
         mStorageRef.getStorage().getReferenceFromUrl(downloadThumbUri).delete();
         mStorageRef.getStorage().getReferenceFromUrl(downloadUri).delete();
+        imageSuccessfullyUploaded = false;
+    }
+
+    private void cancelCreation() {
+        if (!TextUtils.isEmpty(titleNewDeal.getText()) || !TextUtils.isEmpty(linkNewDeal.getText()) || !TextUtils.isEmpty(descriptionNewDeal.getText()) || !TextUtils.isEmpty(discountCodeNewDeal.getText()) || imageSuccessfullyUploaded) { // check if some big fields are filled in
+            // show an alert dialog to confirm data deletion
+            AlertDialog.Builder alert = new AlertDialog.Builder(NewDealActivity.this);
+            alert.setTitle("Cancel creation");
+            alert.setMessage("Are you sure you want to leave this page?\n" +
+                    "All your data will be deleted!");
+            alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    if (imageSuccessfullyUploaded) {
+                        deleteImagesFromFirebase();
+                    }
+                    mainIntent();
+                }
+            });
+            alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            alert.show();
+        }
+        else {
+            mainIntent();
+        }
     }
 }
