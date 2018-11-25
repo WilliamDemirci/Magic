@@ -68,6 +68,7 @@ public class NewDealActivity extends AppCompatActivity {
     public TextView categoryNewDeal;
     private TextView notAGoodDeal;
     private ProgressBar progressBarNewDeal;
+    private ImageView deleteImage;
 
     // TextView labels
     private TextView labelTitleNewDeal;
@@ -98,6 +99,7 @@ public class NewDealActivity extends AppCompatActivity {
     private String currentUserId;
     private Map<String, Object> dealMap;
     private Bitmap compressedImageFile;
+    private Boolean imageSuccessfullyUploaded = false;
 
     // for dates
     private DatePickerDialog.OnDateSetListener startingDate;
@@ -179,6 +181,33 @@ public class NewDealActivity extends AppCompatActivity {
                 imagePicker();
             }
         });
+
+        // if delete button is visible
+        deleteImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // show an alert dialog to confirm deletion
+                AlertDialog.Builder alert = new AlertDialog.Builder(NewDealActivity.this);
+                alert.setTitle("Delete entry");
+                alert.setMessage("Are you sure you want to delete?");
+                alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        imageNewDeal.setImageResource(0);
+                        deleteImage.setVisibility(View.INVISIBLE);
+                        imageSuccessfullyUploaded = false;
+                        imageNewDeal.setImageResource(R.drawable.ic_add_a_photo_white_48dp); // restore default image
+                        // delete images from database cause we download it before submit
+                        deleteImagesFromFirebase();
+                    }
+                });
+                alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alert.show();
+            }
+        });
     }
 
     private void imagePicker() {
@@ -220,6 +249,7 @@ public class NewDealActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 imageUri = result.getUri();
                 imageNewDeal.setImageURI(imageUri);
+                deleteImage.setVisibility(View.VISIBLE);
                 firebaseImagePublishing(); // save directly file on Firebase to save time and to fix a bug
             }
             else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -556,7 +586,7 @@ public class NewDealActivity extends AppCompatActivity {
         endingDateNewDeal = (TextView) findViewById(R.id.endingDateNewDeal);
         descriptionNewDeal = (EditText) findViewById(R.id.descriptionNewDeal);
         progressBarNewDeal = (ProgressBar) findViewById(R.id.progressBarNewDeal);
-
+        deleteImage = (ImageView) findViewById(R.id.deleteImage);
 
         // labels
         labelTitleNewDeal= (TextView) findViewById(R.id.labelTitleNewDeal);
@@ -587,6 +617,9 @@ public class NewDealActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: // back button
+                if(imageSuccessfullyUploaded) { // delete images from database cause we download it before submit
+                    deleteImagesFromFirebase();
+                }
                 mainIntent();
                 return true;
             case R.id.validatePost: // save post (check button)
@@ -603,7 +636,7 @@ public class NewDealActivity extends AppCompatActivity {
         final String categories = categoryNewDeal.getText().toString();
         final String description = descriptionNewDeal.getText().toString();
 
-        if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(categories) && !TextUtils.isEmpty(description) && !TextUtils.isEmpty(downloadUri)) { // mandatory fields must be filled in
+        if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(categories) && !TextUtils.isEmpty(description) && imageSuccessfullyUploaded) { // mandatory fields must be filled in
             progressBarNewDeal.setVisibility(View.VISIBLE);
 
             // get all non mandatory data
@@ -670,6 +703,7 @@ public class NewDealActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             downloadThumbUri = taskSnapshot.getDownloadUrl().toString();
+                            imageSuccessfullyUploaded = true;
                         }});
                 }
                 else {
@@ -699,9 +733,16 @@ public class NewDealActivity extends AppCompatActivity {
     public void onBackPressed() {
         // on back button pressed (not on toolbar)
         // TODO if at least one field is not empty, display an alert dialog 'do you really want to abandon the creation of the deal?' or something like that
-        // TODO delete image from Firebase
         // TODO do the two elements above for onOptionsItemSelected -> Home button
+        if(imageSuccessfullyUploaded) { // delete images from database cause we download it before submit
+            deleteImagesFromFirebase();
+        }
         mainIntent();
         super.onBackPressed();
+    }
+
+    private void deleteImagesFromFirebase() {
+        mStorageRef.getStorage().getReferenceFromUrl(downloadThumbUri).delete();
+        mStorageRef.getStorage().getReferenceFromUrl(downloadUri).delete();
     }
 }

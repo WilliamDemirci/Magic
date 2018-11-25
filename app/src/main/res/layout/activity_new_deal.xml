@@ -459,6 +459,18 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
+            <ImageView
+                android:id="@+id/deleteImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageNewDeal"
+                app:layout_constraintEnd_toEndOf="@+id/imageNewDeal"
+                android:visibility="invisible"
+                android:elevation="1dp"
+                app:srcCompat="@drawable/ic_delete_forever_white_24dp" />
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
