@@ -685,6 +685,30 @@ public class NewDealActivity extends AppCompatActivity {
 
             firebaseDealPublishing();
         }
+        else {
+            Toast.makeText(NewDealActivity.this, "Some fields must be filled in", Toast.LENGTH_SHORT).show();
+            if(TextUtils.isEmpty(title)) {
+                titleNewDeal.setError("Title is required!");
+            }
+            if(TextUtils.isEmpty(price)) {
+                priceNewDeal.setError("Price is required!");
+            }
+            if(TextUtils.isEmpty(categories)) {
+                categoryNewDeal.setError("At least one category is required!");
+            }
+            if(TextUtils.isEmpty(description)) {
+                descriptionNewDeal.setError("Description is required!");
+            }
+//            if(TextUtils.isEmpty(title)) {
+//                titleNewDeal.setError("Title is required!");
+//            }
+            // TODO
+            // verify ending date > starting date
+            // set max size pour image upload and do it for SettingsActiivity
+            // check if link is safe! (and if link exist)
+            // check if usual price > deal price
+            // check if image is empty and display error (display on a textView that have the ImageView size with elevator ..) or change ImageView to TextView?
+        }
     }
 
     private void firebaseImagePublishing() {
@@ -756,9 +780,11 @@ public class NewDealActivity extends AppCompatActivity {
     }
 
     private void deleteImagesFromFirebase() {
-        mStorageRef.getStorage().getReferenceFromUrl(downloadThumbUri).delete();
-        mStorageRef.getStorage().getReferenceFromUrl(downloadUri).delete();
-        imageSuccessfullyUploaded = false;
+        if(imageSuccessfullyUploaded) {
+            mStorageRef.getStorage().getReferenceFromUrl(downloadThumbUri).delete();
+            mStorageRef.getStorage().getReferenceFromUrl(downloadUri).delete();
+            imageSuccessfullyUploaded = false;
+        }
     }
 
     private void cancelCreation() {
@@ -770,9 +796,7 @@ public class NewDealActivity extends AppCompatActivity {
                     "All your data will be deleted!");
             alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    if (imageSuccessfullyUploaded) {
-                        deleteImagesFromFirebase();
-                    }
+                    deleteImagesFromFirebase();
                     mainIntent();
                 }
             });
