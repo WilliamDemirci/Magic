@@ -1,15 +1,16 @@
 package com.williamdemirci.magic;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,10 +41,16 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import id.zelory.compressor.Compressor;
 
 public class NewDealActivity extends AppCompatActivity {
     // components
@@ -56,9 +65,12 @@ public class NewDealActivity extends AppCompatActivity {
     private EditText startingDateNewDeal;
     private EditText endingDateNewDeal;
     private EditText descriptionNewDeal;
-    public TextView categoryNewDeal;
+    private EditText categoryNewDeal;
     private TextView notAGoodDeal;
     private ProgressBar progressBarNewDeal;
+    private ImageView deleteImage;
+    private ImageView deleteStartingDate;
+    private ImageView deleteEndingDate;
 
     // TextView labels
     private TextView labelTitleNewDeal;
@@ -79,24 +91,107 @@ public class NewDealActivity extends AppCompatActivity {
 
     // for image
     private Uri imageUri = null;
+    private String downloadUri = "";
+    private String downloadThumbUri = "";
 
     // for Firebase
     private StorageReference mStorageRef;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private String currentUserId;
+    private Map<String, Object> dealMap;
+    private Bitmap compressedImageFile;
+    private Boolean imageSuccessfullyUploaded = false;
+
+    // for dates
+    private DatePickerDialog.OnDateSetListener startingDate;
+    private DatePickerDialog.OnDateSetListener endingDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_deal);
-
+        
         componentsDeclaration();
         customizeToolbar();
         displayLabel();
 
         setImage();
         setCategories();
+        setDates();
+    }
+
+    private void setDates() {
+        // set starting and ending dates
+        // set starting date
+        startingDateNewDeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        NewDealActivity.this,
+                        android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK,
+                        startingDate,
+                        year,month,day);
+                dialog.show();
+            }
+        });
+
+        startingDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                startingDateNewDeal.setText(day + "/" + (month+1) + "/" + year);
+                deleteStartingDate.setVisibility(View.VISIBLE);
+            }
+        };
+
+        // set ending date
+        endingDateNewDeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        NewDealActivity.this,
+                        android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK,
+                        endingDate,
+                        year,month,day);
+                dialog.show();
+            }
+        });
+
+        endingDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                endingDateNewDeal.setText(day + "/" + (month+1) + "/" + year);
+                deleteEndingDate.setVisibility(View.VISIBLE);
+            }
+        };
+
+        // if deleteStartingDate button is visible (if startingDateNewDeal is not empty)
+        deleteStartingDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startingDateNewDeal.setText("");
+                deleteStartingDate.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        // if deleteEndingDate button is visible (if endingDateNewDeal is not empty)
+        deleteEndingDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endingDateNewDeal.setText("");
+                deleteEndingDate.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     private void setImage() { // set an image for the new deal
@@ -104,6 +199,31 @@ public class NewDealActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 imagePicker();
+            }
+        });
+
+        // if delete button is visible
+        deleteImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // show an alert dialog to confirm deletion
+                AlertDialog.Builder alert = new AlertDialog.Builder(NewDealActivity.this);
+                alert.setTitle("Delete entry");
+                alert.setMessage("Are you sure you want to delete?");
+                alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        imageNewDeal.setImageResource(0);
+                        deleteImage.setVisibility(View.INVISIBLE);
+                        imageNewDeal.setImageResource(R.drawable.ic_add_a_photo_white_48dp); // restore default image
+                        deleteImagesFromFirebase(); // delete images from database cause we download it before submit
+                    }
+                });
+                alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alert.show();
             }
         });
     }
@@ -147,6 +267,8 @@ public class NewDealActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 imageUri = result.getUri();
                 imageNewDeal.setImageURI(imageUri);
+                deleteImage.setVisibility(View.VISIBLE);
+                firebaseImagePublishing(); // save directly file on Firebase to save time and to fix a bug
             }
             else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(NewDealActivity.this, "Error : " + result.getError().getMessage(), Toast.LENGTH_SHORT).show();
@@ -373,6 +495,12 @@ public class NewDealActivity extends AppCompatActivity {
                     labelCategoryNewDeal.setVisibility(View.INVISIBLE);
                 }
                 else {
+                    if(categoryNewDeal.getText().toString().contains(",")) {
+                        labelCategoryNewDeal.setText("Categories");
+                    }
+                    else {
+                        labelCategoryNewDeal.setText("Category");
+                    }
                     labelCategoryNewDeal.setVisibility(View.VISIBLE);
                 }
             }
@@ -456,6 +584,7 @@ public class NewDealActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
+        dealMap = new HashMap<>();
 
         // for categories
         selectedCategoriesList = new ArrayList<>();
@@ -470,16 +599,18 @@ public class NewDealActivity extends AppCompatActivity {
         normalPriceNewDeal = (EditText) findViewById(R.id.normalPriceNewDeal);
         shippingCostNewDeal = (EditText) findViewById(R.id.shippingCostNewDeal);
         discountCodeNewDeal = (EditText) findViewById(R.id.discountCodeNewDeal);
-        categoryNewDeal = (TextView) findViewById(R.id.categoryNewDeal);
-        startingDateNewDeal = (EditText) findViewById(R.id.startingDateNewDeal);
-        endingDateNewDeal = (EditText) findViewById(R.id.endingDateNewDeal);
+        categoryNewDeal = (EditText) findViewById(R.id.categoryNewDeal); // use EditText instead of TextView because I can't add the underline bar under the field ><
+        startingDateNewDeal = (EditText) findViewById(R.id.startingDateNewDeal); // use EditText instead of TextView because I can't add the underline bar under the field ><
+        endingDateNewDeal = (EditText) findViewById(R.id.endingDateNewDeal); // use EditText instead of TextView because I can't add the underline bar under the field ><
         descriptionNewDeal = (EditText) findViewById(R.id.descriptionNewDeal);
         progressBarNewDeal = (ProgressBar) findViewById(R.id.progressBarNewDeal);
-
+        deleteImage = (ImageView) findViewById(R.id.deleteImage);
+        deleteStartingDate = (ImageView) findViewById(R.id.deleteStartingDate);
+        deleteEndingDate = (ImageView) findViewById(R.id.deleteEndingDate);
 
         // labels
         labelTitleNewDeal= (TextView) findViewById(R.id.labelTitleNewDeal);
-        labelLinkNewDeal= (TextView) findViewById(R.id.labellinkNewDeal);
+        labelLinkNewDeal= (TextView) findViewById(R.id.labelLinkNewDeal);
         labelPriceNewDeal = (TextView) findViewById(R.id.labelPriceNewDeal);
         labelNormalPriceNewDeal= (TextView) findViewById(R.id.labelNormalPriceNewDeal);
         labelShippingCostNewDeal= (TextView) findViewById(R.id.labelShippingCostNewDeal);
@@ -506,7 +637,7 @@ public class NewDealActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: // back button
-                mainIntent();
+                cancelCreation();
                 return true;
             case R.id.validatePost: // save post (check button)
                 publishDeal();
@@ -516,62 +647,168 @@ public class NewDealActivity extends AppCompatActivity {
     }
 
     private void publishDeal() {
-        // Mandatory fields
+        // Mandatory fields without image
         final String title = titleNewDeal.getText().toString();
         final String price = priceNewDeal.getText().toString();
         final String categories = categoryNewDeal.getText().toString();
         final String description = descriptionNewDeal.getText().toString();
 
-        if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(categories) && !TextUtils.isEmpty(description)) {
+        if(!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(categories) && !TextUtils.isEmpty(description) && imageSuccessfullyUploaded) { // mandatory fields must be filled in
             progressBarNewDeal.setVisibility(View.VISIBLE);
-            // store image with a unique ID name
-            String fileName = UUID.randomUUID().toString();
-            StorageReference filePath = mStorageRef.child("dealImages").child(fileName + ".jpg");
-            filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if(task.isSuccessful()) {
-                        String downloadUri = task.getResult().getDownloadUrl().toString();
-                        Map<String, Object> dealMap = new HashMap<>();
-                        // mandatory fields
-                        dealMap.put("userId", currentUserId);
-                        dealMap.put("timestamp", FieldValue.serverTimestamp());
-                        dealMap.put("title", title);
-                        dealMap.put("price", price);
-                        dealMap.put("categories", categories);
-                        dealMap.put("description", description);
-                        // other fields
-                        dealMap.put("image", downloadUri);
-                        db.collection("Deals").add(dealMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                if(task.isSuccessful()) {
-                                    Toast.makeText(NewDealActivity.this, "New deal published", Toast.LENGTH_LONG).show();
-                                    mainIntent();
-                                }
-                                else {
-                                    Toast.makeText(NewDealActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                                progressBarNewDeal.setVisibility(View.INVISIBLE);
-                            }
-                        });
-                    }
-                    else {
-                        progressBarNewDeal.setVisibility(View.INVISIBLE);
-                    }
-                }
-            });
+
+            // get all non mandatory data
+            final String link = linkNewDeal.getText().toString();
+            final String normalPrice = normalPriceNewDeal.getText().toString();
+            final String shippingCost = shippingCostNewDeal.getText().toString();
+            final String discountCode = discountCodeNewDeal.getText().toString();
+            final String startingDate = startingDateNewDeal.getText().toString();
+            final String endingDate = endingDateNewDeal.getText().toString();
+
+            // set deal HashMap
+            // technical data
+            dealMap.put("userId", currentUserId);
+            dealMap.put("timestamp", FieldValue.serverTimestamp());
+            // mandatory fields
+            dealMap.put("title", title);
+            dealMap.put("price", price);
+            dealMap.put("categories", categories);
+            dealMap.put("description", description);
+            dealMap.put("image", downloadUri);
+            dealMap.put("thumb", downloadThumbUri);
+            // other fields
+            dealMap.put("link", link);
+            dealMap.put("normalPrice", normalPrice);
+            dealMap.put("shippingCost", shippingCost);
+            dealMap.put("discountCode", discountCode);
+            dealMap.put("startingDate", startingDate);
+            dealMap.put("endingDate", endingDate);
+
+            firebaseDealPublishing();
+        }
+        else {
+            Toast.makeText(NewDealActivity.this, "Some fields must be filled in", Toast.LENGTH_SHORT).show();
+            if(TextUtils.isEmpty(title)) {
+                titleNewDeal.setError("Title is required!");
+            }
+            if(TextUtils.isEmpty(price)) {
+                priceNewDeal.setError("Price is required!");
+            }
+            if(TextUtils.isEmpty(categories)) {
+                categoryNewDeal.setError("At least one category is required!");
+            }
+            if(TextUtils.isEmpty(description)) {
+                descriptionNewDeal.setError("Description is required!");
+            }
+//            if(TextUtils.isEmpty(title)) {
+//                titleNewDeal.setError("Title is required!");
+//            }
+            // TODO
+            // verify ending date > starting date
+            // set max size pour image upload and do it for SettingsActiivity
+            // check if link is safe! (and if link exist)
+            // check if usual price > deal price
+            // check if image is empty and display error (display on a textView that have the ImageView size with elevator ..) or change ImageView to TextView?
         }
     }
 
-    @Override
-    public void onBackPressed() { // on back button pressed (not on toolbar)
-        mainIntent();
-        super.onBackPressed();
+    private void firebaseImagePublishing() {
+        // store image with a unique ID name
+        final String fileName = UUID.randomUUID().toString();
+        StorageReference filePath = mStorageRef.child("dealImages").child(fileName + ".jpg");
+        filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if(task.isSuccessful()) {
+                    File newImageFile = new File(imageUri.getPath());
+                    try {
+                        compressedImageFile = new Compressor(NewDealActivity.this)
+                                .setMaxHeight(480)
+                                .setMaxWidth(640)
+                                .setQuality(10) // same results for 50 and 10 :/
+//                                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+//                                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
+                                .compressToBitmap(newImageFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    downloadUri = task.getResult().getDownloadUrl().toString();
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    compressedImageFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] thumbData = baos.toByteArray();
+
+                    UploadTask uploadTask = mStorageRef.child("thumbsImages").child(fileName + ".jpg").putBytes(thumbData);
+
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            downloadThumbUri = taskSnapshot.getDownloadUrl().toString();
+                            imageSuccessfullyUploaded = true;
+                        }});
+                }
+                else {
+                    Toast.makeText(NewDealActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
+    private void firebaseDealPublishing() {
+        db.collection("Deals").add(dealMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(NewDealActivity.this, "Thanks! New deal published", Toast.LENGTH_LONG).show();
+                    mainIntent();
+                }
+                else {
+                    Toast.makeText(NewDealActivity.this, "Error : " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+                progressBarNewDeal.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // on back button pressed (not on toolbar)
+        // TODO if at least one field is not empty, display an alert dialog 'do you really want to abandon the creation of the deal?' or something like that
+        // TODO do the two elements above for onOptionsItemSelected -> Home button
+        cancelCreation();
+//        super.onBackPressed();
+    }
+
+    private void deleteImagesFromFirebase() {
+        if(imageSuccessfullyUploaded) {
+            mStorageRef.getStorage().getReferenceFromUrl(downloadThumbUri).delete();
+            mStorageRef.getStorage().getReferenceFromUrl(downloadUri).delete();
+            imageSuccessfullyUploaded = false;
+        }
+    }
+
+    private void cancelCreation() {
+        if (!TextUtils.isEmpty(titleNewDeal.getText()) || !TextUtils.isEmpty(linkNewDeal.getText()) || !TextUtils.isEmpty(descriptionNewDeal.getText()) || !TextUtils.isEmpty(discountCodeNewDeal.getText()) || imageSuccessfullyUploaded) { // check if some big fields are filled in
+            // show an alert dialog to confirm data deletion
+            AlertDialog.Builder alert = new AlertDialog.Builder(NewDealActivity.this);
+            alert.setTitle("Cancel creation");
+            alert.setMessage("Are you sure you want to leave this page?\n" +
+                    "All your data will be deleted!");
+            alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    deleteImagesFromFirebase();
+                    mainIntent();
+                }
+            });
+            alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            alert.show();
+        }
+        else {
+            mainIntent();
+        }
     }
 }
