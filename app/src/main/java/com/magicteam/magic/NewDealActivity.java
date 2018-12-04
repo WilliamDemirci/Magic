@@ -1,4 +1,4 @@
-package com.williamdemirci.magic;
+package com.magicteam.magic;
 
 import android.Manifest;
 import android.app.DatePickerDialog;

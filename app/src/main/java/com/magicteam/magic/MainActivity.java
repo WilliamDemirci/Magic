@@ -1,4 +1,4 @@
-package com.williamdemirci.magic;
+package com.magicteam.magic;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if(task.isSuccessful()) {
                         if(!task.getResult().exists()) {
-                            settingsIntent();
+                            settingsIntent(); // if user doesn't have a picture or a username
                         }
                     }
                     else {
