@@ -1,12 +1,17 @@
 package com.magicteam.magic;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,9 +26,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private Toolbar dealToolbar;
+    private Toolbar mainToolbar;
     private FloatingActionButton addButton;
     private FirebaseFirestore db;
     private String currentUserId;
@@ -32,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private RateFragment rateFragment;
     private ExpirationFragment expirationFragment;
     private CommentFragment commentFragment;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,36 +56,108 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fragmentUtils() {
-        mainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        addTabs(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        // set icons
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_date_range_grey_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_star_grey_24dp);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_hourglass_empty_grey_24dp);
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_comment_grey_24dp);
+
+        // set color of icons
+        tabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.grey), PorterDuff.Mode.SRC_IN);
+        tabLayout.getTabAt(1).getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
+        tabLayout.getTabAt(2).getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
+        tabLayout.getTabAt(3).getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
+
+        // change color if it's selected
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.dateFrag:
-                        fragmentTransition(dateFragment);
-                        return true;
+            public void onTabSelected(TabLayout.Tab tab) {
+                tab.getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.grey), PorterDuff.Mode.SRC_IN);
+            }
 
-                    case R.id.rateFrag:
-                        fragmentTransition(rateFragment);
-                        return true;
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                tab.getIcon().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
+            }
 
-                    case R.id.expirationFrag:
-                        fragmentTransition(expirationFragment);
-                        return true;
-
-                    case R.id.commentFrag:
-                        fragmentTransition(commentFragment);
-                        return true;
-
-                    default:
-                        return false;
-                }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        dateFragment = new DateFragment();
-        rateFragment = new RateFragment();
-        expirationFragment = new ExpirationFragment();
-        commentFragment = new CommentFragment();
     }
+
+    private void addTabs(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new DateFragment(), "Date");
+        adapter.addFrag(new RateFragment(), "Rate");
+        adapter.addFrag(new ExpirationFragment(), "Expiration");
+        adapter.addFrag(new CommentFragment(), "Comment");
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFrag(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
+
+//    private void fragmentUtils() {
+//        mainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//            switch (menuItem.getItemId()){
+//                case R.id.dateFrag:
+//                    fragmentTransition(dateFragment);
+//                    return true;
+//                case R.id.rateFrag:
+//                    fragmentTransition(rateFragment);
+//                    return true;
+//                case R.id.expirationFrag:
+//                    fragmentTransition(expirationFragment);
+//                    return true;
+//                case R.id.commentFrag:
+//                    fragmentTransition(commentFragment);
+//                    return true;
+//                default:
+//                    return false;
+//            }
+//            }
+//        });
+//        dateFragment = new DateFragment();
+//        rateFragment = new RateFragment();
+//        expirationFragment = new ExpirationFragment();
+//        commentFragment = new CommentFragment();
+//    }
 
     private void floatingButton() {
         // Floating Action Button (add a new deal)
@@ -93,13 +175,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void customizeToolbar() {
-        setSupportActionBar(dealToolbar);
+        setSupportActionBar(mainToolbar);
     }
 
     private void componentsDeclaration() {
-        dealToolbar = (Toolbar) findViewById(R.id.dealToolbar);
+        mainToolbar = (Toolbar) findViewById(R.id.mainToolbar);
         addButton = (FloatingActionButton) findViewById(R.id.addButton);
-        mainNav = (BottomNavigationView) findViewById(R.id.mainNav);
+//        mainNav = (BottomNavigationView) findViewById(R.id.mainNav);
     }
 
     @Override
@@ -171,9 +253,9 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void fragmentTransition(Fragment fragment) {
+    /*private void fragmentTransition(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_container, fragment);
         fragmentTransaction.commit();
-    }
+    }*/
 }
