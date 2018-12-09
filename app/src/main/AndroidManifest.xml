@@ -27,7 +27,6 @@
         <activity android:name="com.magicteam.magic.ResetPasswordActivity" />
         <activity
             android:name="com.magicteam.magic.SettingsActivity"
-            android:screenOrientation="portrait"
             android:parentActivityName="com.magicteam.magic.MainActivity" />
         <activity
             android:name="com.magicteam.magic.NewDealActivity"
