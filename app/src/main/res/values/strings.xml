@@ -56,4 +56,9 @@
     <string name="error_field_required">This field is required</string>
     <string name="passwordVerification">Password verification</string>
     <string name="saveField">Save</string>
+    <string name="title_of_the_deal">Title of the deal</string>
+    <string name="categories">Categories</string>
+    <string name="price">0,00€</string>
+    <string name="score">0</string>
+    <string name="date">10/12/2018</string>
 </resources>
