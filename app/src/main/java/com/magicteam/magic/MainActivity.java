@@ -3,7 +3,10 @@ package com.magicteam.magic;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -24,29 +27,79 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton addButton;
     private FirebaseFirestore db;
     private String currentUserId;
+    private BottomNavigationView mainNav;
+    private DateFragment dateFragment;
+    private RateFragment rateFragment;
+    private ExpirationFragment expirationFragment;
+    private CommentFragment commentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        componentsDeclaration();
+        customizeToolbar();
+        firebaseUtils();
+        floatingButton(); // Floating Action Button (add a new deal)
+        fragmentUtils();
+    }
 
+    private void fragmentUtils() {
+        mainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.dateFrag:
+                        fragmentTransition(dateFragment);
+                        return true;
 
+                    case R.id.rateFrag:
+                        fragmentTransition(rateFragment);
+                        return true;
 
-        // Toolbar
-        dealToolbar = (Toolbar) findViewById(R.id.dealToolbar);
-        setSupportActionBar(dealToolbar);
+                    case R.id.expirationFrag:
+                        fragmentTransition(expirationFragment);
+                        return true;
 
+                    case R.id.commentFrag:
+                        fragmentTransition(commentFragment);
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+        dateFragment = new DateFragment();
+        rateFragment = new RateFragment();
+        expirationFragment = new ExpirationFragment();
+        commentFragment = new CommentFragment();
+    }
+
+    private void floatingButton() {
         // Floating Action Button (add a new deal)
-        addButton = (FloatingActionButton) findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addDealIntent();
             }
         });
+    }
+
+    private void firebaseUtils() {
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+    }
+
+    private void customizeToolbar() {
+        setSupportActionBar(dealToolbar);
+    }
+
+    private void componentsDeclaration() {
+        dealToolbar = (Toolbar) findViewById(R.id.dealToolbar);
+        addButton = (FloatingActionButton) findViewById(R.id.addButton);
+        mainNav = (BottomNavigationView) findViewById(R.id.mainNav);
     }
 
     @Override
@@ -116,5 +169,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intentSettingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(intentSettingsActivity);
         finish();
+    }
+
+    private void fragmentTransition(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_container, fragment);
+        fragmentTransaction.commit();
     }
 }
