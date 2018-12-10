@@ -14,7 +14,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -155,10 +157,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="40dp"
                 app:layout_constraintEnd_toStartOf="@+id/unlikeMainDeal"
                 app:layout_constraintTop_toBottomOf="@+id/categoriesMainDeal"
                 app:srcCompat="@drawable/ic_share_grey_24dp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/shareMainDeal"
+                app:layout_constraintTop_toTopOf="@+id/shareMainDeal"
+                app:srcCompat="@drawable/ic_comment_grey_24dp" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
