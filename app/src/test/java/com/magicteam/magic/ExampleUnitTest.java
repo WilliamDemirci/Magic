@@ -1,4 +1,4 @@
-package com.williamdemirci.magic;
+package com.magicteam.magic;
 
 import org.junit.Test;
 

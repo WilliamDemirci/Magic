@@ -53,7 +53,7 @@
                 android:ems="10"
                 android:hint="@string/titleField"
                 android:inputType="text"
-                android:maxLength="150"
+                android:maxLength="80"
                 android:textAlignment="center"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/grey"

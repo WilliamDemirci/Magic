@@ -1,4 +1,4 @@
-package com.williamdemirci.magic;
+package com.magicteam.magic;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -72,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
 //                                    Log.d(TAG, "createUserWithEmail:success");
                                         Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                                         FirebaseUser user = mAuth.getCurrentUser();
+                                        mainIntent();
                                         settingsIntent();
                                     } else {
                                         // If sign in fails, display a message to the user.

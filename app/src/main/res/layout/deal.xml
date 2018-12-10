@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/mainDeal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageMainDeal"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/hat" />
+
+            <TextView
+                android:id="@+id/titleMainDeal"
+                android:layout_width="0dp"
+                android:layout_height="68dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dapibus, erat metus."
+                android:textAlignment="viewStart"
+                android:textColor="@color/grey"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageMainDeal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/likeMainDeal"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleMainDeal"
+                app:srcCompat="@drawable/ic_thumb_up_grey_24dp" />
+
+            <ImageView
+                android:id="@+id/unlikeMainDeal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                app:srcCompat="@drawable/ic_thumb_down_black_24dp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="34dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:text="@string/score"
+                android:textAlignment="center"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.968"
+                app:layout_constraintStart_toEndOf="@+id/imageMainDeal"
+                app:layout_constraintTop_toBottomOf="@+id/likeMainDeal" />
+
+            <ImageView
+                android:id="@+id/hourglassMainDeal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageMainDeal"
+                app:srcCompat="@drawable/ic_hourglass_empty_grey_24dp" />
+
+            <TextView
+                android:id="@+id/dateMainDeal"
+                android:layout_width="80dp"
+                android:layout_height="19dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/date"
+                android:textAlignment="viewStart"
+                android:textColor="@color/grey"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/hourglassMainDeal"
+                app:layout_constraintTop_toBottomOf="@+id/imageMainDeal" />
+
+            <TextView
+                android:id="@+id/categoriesMainDeal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dapibus, erat metus."
+                android:textAlignment="viewStart"
+                android:textColor="@color/grey"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/dateMainDeal"
+                app:layout_constraintEnd_toStartOf="@+id/textView3"
+                app:layout_constraintStart_toEndOf="@+id/imageMainDeal"
+                app:layout_constraintTop_toBottomOf="@+id/titleMainDeal" />
+
+            <TextView
+                android:id="@+id/priceMainDeal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/price"
+                android:textAlignment="viewStart"
+                android:textColor="@color/colorAccent"
+                android:textColorHint="@color/darkBlue"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/categoriesMainDeal"
+                app:layout_constraintTop_toBottomOf="@+id/categoriesMainDeal" />
+
+            <ImageView
+                android:id="@+id/shareMainDeal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="40dp"
+                app:layout_constraintEnd_toStartOf="@+id/unlikeMainDeal"
+                app:layout_constraintTop_toBottomOf="@+id/categoriesMainDeal"
+                app:srcCompat="@drawable/ic_share_grey_24dp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/shareMainDeal"
+                app:layout_constraintTop_toTopOf="@+id/shareMainDeal"
+                app:srcCompat="@drawable/ic_comment_grey_24dp" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>
