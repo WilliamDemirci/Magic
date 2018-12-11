@@ -9,6 +9,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="comment" />
+        android:text="Feature soon available"
+        android:textAlignment="center"
+        android:textColor="@color/grey"
+        android:textSize="18sp" />
 
 </FrameLayout>

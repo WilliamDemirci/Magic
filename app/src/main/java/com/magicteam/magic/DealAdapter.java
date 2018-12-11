@@ -1,5 +1,6 @@
 package com.magicteam.magic;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -36,6 +37,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
     public Context context;
     private int tmpScore;
     private int minusSize, plusSize;
+    private String calculatedScore;
 
     public DealAdapter(List<Deal> dealList) {
         this.dealList = dealList;
@@ -147,12 +149,14 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                 if(!documentSnapshots.isEmpty()){
                     minusSize = documentSnapshots.size();
-                    viewHolder.setScore(String.valueOf(plusSize - minusSize));
+                    calculatedScore = String.valueOf(plusSize - minusSize);
+                    viewHolder.setScore(calculatedScore);
 //                    viewHolder.setScore(scoreFF);
                 }
                 else {
                     minusSize = 0;
-                    viewHolder.setScore(String.valueOf(plusSize - minusSize));
+                    calculatedScore = String.valueOf(plusSize - minusSize);
+                    viewHolder.setScore(calculatedScore);
 //                    viewHolder.setScore("0");
                 }
 
@@ -165,21 +169,23 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                 if(!documentSnapshots.isEmpty()){
                     plusSize = documentSnapshots.size();
-                    viewHolder.setScore(String.valueOf(plusSize - minusSize));
+                    calculatedScore = String.valueOf(plusSize - minusSize);
+                    viewHolder.setScore(calculatedScore);
 //                    viewHolder.setScore(scoreFF);
                 }
                 else {
                     plusSize = 0;
-                    viewHolder.setScore(String.valueOf(plusSize - minusSize));
+                    calculatedScore = String.valueOf(plusSize - minusSize);
+                    viewHolder.setScore(calculatedScore);
 //                    viewHolder.setScore("0");
                 }
 
             }
         });
 
-
+//
 //        Map<String, Object> scoreMap = new HashMap<>();
-//        scoreMap.put(String.valueOf(tmpScore), score);
+//        scoreMap.put("score", calculatedScore);
 //        firebaseFirestore.collection("Deals").document(dealId).set(scoreMap);
     }
 
@@ -211,9 +217,20 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
             shareButton = mView.findViewById(R.id.shareMainDeal);
         }
 
+        @SuppressLint("ResourceAsColor")
         public void setScore(String rateValue) {
             rateView = mView.findViewById(R.id.rateMainDeal);
             rateView.setText(rateValue);
+//            rateView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+//            if(Integer.valueOf(rateValue) > 0) {
+//                rateView.setTextColor(R.color.green);
+//            }
+//            else if(Integer.valueOf(rateValue) < 0) {
+//                rateView.setTextColor(R.color.colorAccent);
+//            }
+//            else {
+//                rateView.setTextColor(R.color.grey);
+//            }
         }
 
         public void setTitleText(String titleText) {
