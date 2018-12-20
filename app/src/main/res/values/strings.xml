@@ -24,6 +24,7 @@
     <string name="usualPriceField">Usual price (Kč)</string>
     <string name="priceField">Price (Kč)</string>
     <string name="shippingCostField">Shipping cost (Kč)</string>
+    <string name="currency">Kč</string>
     <string name="discountCodeField">Discount code</string>
     <string name="selectCategoriesField">Select categories</string>
     <string name="startingDateField">Starting date</string>
@@ -64,4 +65,5 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="czech_currency">Kč</string>
 </resources>

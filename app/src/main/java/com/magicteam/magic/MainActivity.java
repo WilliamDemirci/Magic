@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addTabs(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new DateFragment(), "Date");
+        adapter.addFrag(new DateFragment(), "New");
         adapter.addFrag(new RateFragment(), "Rate");
         adapter.addFrag(new ExpirationFragment(), "Expiration");
         adapter.addFrag(new CommentFragment(), "Comment");
@@ -221,6 +221,16 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.signOutMenu:
                 signOut();
+                return true;
+            case R.id.refreshMenu:
+                Toast.makeText(this, "Already refreshed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.searchMenu:
+                Toast.makeText(this, "Feature soon available", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.alertMenu:
+            case R.id.alertMenuVisible:
+                Toast.makeText(this, "Feature soon available", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.settingsMenu:
                 settingsIntent();

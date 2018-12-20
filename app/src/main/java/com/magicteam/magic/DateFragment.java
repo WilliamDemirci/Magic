@@ -13,6 +13,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -49,12 +50,17 @@ public class DateFragment extends Fragment {
         dealListDate.setAdapter(dealAdapter);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseFirestore.collection("Deals").addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+        Query dateQuery = firebaseFirestore.collection("Deals").orderBy("timestamp", Query.Direction.DESCENDING);
+
+        dateQuery.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 for(DocumentChange documentChange: queryDocumentSnapshots.getDocumentChanges()) {
                     if(documentChange.getType() == DocumentChange.Type.ADDED) {
-                        Deal deal = documentChange.getDocument().toObject(Deal.class);
+                        // for like/unlike deal
+                        String dealId = documentChange.getDocument().getId();
+                        Deal deal = documentChange.getDocument().toObject(Deal.class).withId(dealId);
                         dealList.add(deal);
                         dealAdapter.notifyDataSetChanged();
                     }
@@ -65,5 +71,4 @@ public class DateFragment extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
-
 }

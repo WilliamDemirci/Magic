@@ -71,6 +71,7 @@ public class NewDealActivity extends AppCompatActivity {
     private ImageView deleteImage;
     private ImageView deleteStartingDate;
     private ImageView deleteEndingDate;
+    private String score;
 
     // TextView labels
     private TextView labelTitleNewDeal;
@@ -253,7 +254,7 @@ public class NewDealActivity extends AppCompatActivity {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setCropShape(CropImageView.CropShape.RECTANGLE)
-                .setAspectRatio(16,9)
+                .setAspectRatio(1,1)
 //                                .setMaxCropResultSize()
                 .start(NewDealActivity.this);
     }
@@ -682,6 +683,7 @@ public class NewDealActivity extends AppCompatActivity {
             dealMap.put("discountCode", discountCode);
             dealMap.put("startingDate", startingDate);
             dealMap.put("endingDate", endingDate);
+            dealMap.put("score", "0");
 
             firebaseDealPublishing();
         }

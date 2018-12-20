@@ -2,7 +2,7 @@ package com.magicteam.magic;
 
 import java.util.Date;
 
-public class Deal {
+public class Deal extends DealId {
 
     public String startingDate;
     public String endingDate;
@@ -17,12 +17,13 @@ public class Deal {
     public String price, normalPrice, shippingCost;
     public String categories;
     public String description;
+    public String score;
 
     public Deal() {
 
     }
 
-    public Deal(String startingDate, String endingDate, String discountCode, String image, String link, String thumb, String title, String userId, Date timestamp, String price, String normalPrice, String shippingCost, String categories, String description) {
+    public Deal(String startingDate, String endingDate, String discountCode, String score, String image, String link, String thumb, String title, String userId, Date timestamp, String price, String normalPrice, String shippingCost, String categories, String description) {
         this.startingDate = startingDate;
         this.endingDate = endingDate;
         this.discountCode = discountCode;
@@ -37,6 +38,7 @@ public class Deal {
         this.shippingCost = shippingCost;
         this.categories = categories;
         this.description = description;
+        this.score = score;
     }
 
     public Deal(String image, String thumb, String title, String price, String categories, String description) { // mandatory fields
@@ -158,5 +160,13 @@ public class Deal {
 
     public void setShippingCost(String shippingCost) {
         this.shippingCost = shippingCost;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 }
